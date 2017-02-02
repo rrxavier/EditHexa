@@ -1,0 +1,3 @@
+Zoé : Interface
+Ricardo : Lecture fichier
+Dudu : Calcul valeurs

@@ -186,8 +186,7 @@ namespace CSConversionHexadecimal_Others
             {
                 uint num = uint.Parse(hexaNum4 + hexaNum3 + hexaNum2 + hexaNum1, System.Globalization.NumberStyles.AllowHexSpecifier);
 
-                float f = BitConverter.ToSingle(BitConverter.GetBytes(num), 0);
-                return f.ToString();
+                return BitConverter.ToSingle(BitConverter.GetBytes(num), 0).ToString();
             }
             else
                 return "Hexadécimal saisies incorrecte";
@@ -199,7 +198,7 @@ namespace CSConversionHexadecimal_Others
             {
                 Int64 bTemp = Convert.ToInt64(hexaNum8 + hexaNum7 + hexaNum6 + hexaNum5 + hexaNum4 + hexaNum3 + hexaNum2 + hexaNum1, 16);
                 //Double dbl = (double)bTemp;
-                return Convert.ToDouble(bTemp).ToString(); //Erreur
+                return BitConverter.ToDouble(BitConverter.GetBytes(bTemp), 0).ToString(); //Erreur
             }
             else
                 return "Hexadécimal saisies incorrecte";

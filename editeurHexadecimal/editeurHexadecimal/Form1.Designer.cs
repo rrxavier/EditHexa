@@ -41,26 +41,51 @@
             this.lblName = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tpBite = new System.Windows.Forms.TabPage();
+            this.lblDouble = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.lblFloat = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.lbl32BitsNS = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.lbl32BitsSigned = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.lbl16BitsNS = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.lbl16BitSigned = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.lbl8BitsNS = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.lbl8BitsSigned = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.lblOctal = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.lblBinary = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.lblChar = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.btnOpenFile = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.tctrlData.SuspendLayout();
             this.tpFile.SuspendLayout();
+            this.tpBite.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView
             // 
             this.dataGridView.AllowUserToAddRows = false;
-            this.dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCellsExceptHeader;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.Location = new System.Drawing.Point(351, 34);
+            this.dataGridView.Location = new System.Drawing.Point(353, 33);
             this.dataGridView.Name = "dataGridView";
-            this.dataGridView.Size = new System.Drawing.Size(437, 373);
+            this.dataGridView.Size = new System.Drawing.Size(437, 406);
             this.dataGridView.TabIndex = 3;
             // 
             // tctrlData
             // 
             this.tctrlData.Controls.Add(this.tpFile);
             this.tctrlData.Controls.Add(this.tpBite);
-            this.tctrlData.Location = new System.Drawing.Point(12, 12);
+            this.tctrlData.Location = new System.Drawing.Point(14, 11);
             this.tctrlData.Name = "tctrlData";
             this.tctrlData.SelectedIndex = 0;
             this.tctrlData.Size = new System.Drawing.Size(297, 399);
@@ -89,7 +114,6 @@
             this.tpFile.TabIndex = 0;
             this.tpFile.Text = "Détails Fichier";
             this.tpFile.UseVisualStyleBackColor = true;
-            this.tpFile.Click += new System.EventHandler(this.tpFile_Click);
             // 
             // lblShortName
             // 
@@ -219,6 +243,28 @@
             // 
             // tpBite
             // 
+            this.tpBite.Controls.Add(this.lblDouble);
+            this.tpBite.Controls.Add(this.label15);
+            this.tpBite.Controls.Add(this.lblFloat);
+            this.tpBite.Controls.Add(this.label18);
+            this.tpBite.Controls.Add(this.lbl32BitsNS);
+            this.tpBite.Controls.Add(this.label20);
+            this.tpBite.Controls.Add(this.lbl32BitsSigned);
+            this.tpBite.Controls.Add(this.label22);
+            this.tpBite.Controls.Add(this.lbl16BitsNS);
+            this.tpBite.Controls.Add(this.label16);
+            this.tpBite.Controls.Add(this.lbl16BitSigned);
+            this.tpBite.Controls.Add(this.label14);
+            this.tpBite.Controls.Add(this.lbl8BitsNS);
+            this.tpBite.Controls.Add(this.label13);
+            this.tpBite.Controls.Add(this.lbl8BitsSigned);
+            this.tpBite.Controls.Add(this.label11);
+            this.tpBite.Controls.Add(this.lblOctal);
+            this.tpBite.Controls.Add(this.label10);
+            this.tpBite.Controls.Add(this.lblBinary);
+            this.tpBite.Controls.Add(this.label9);
+            this.tpBite.Controls.Add(this.lblChar);
+            this.tpBite.Controls.Add(this.label8);
             this.tpBite.Location = new System.Drawing.Point(4, 22);
             this.tpBite.Name = "tpBite";
             this.tpBite.Padding = new System.Windows.Forms.Padding(3);
@@ -227,11 +273,224 @@
             this.tpBite.Text = "Détails Octet";
             this.tpBite.UseVisualStyleBackColor = true;
             // 
+            // lblDouble
+            // 
+            this.lblDouble.AutoSize = true;
+            this.lblDouble.Location = new System.Drawing.Point(74, 318);
+            this.lblDouble.Name = "lblDouble";
+            this.lblDouble.Size = new System.Drawing.Size(16, 13);
+            this.lblDouble.TabIndex = 23;
+            this.lblDouble.Text = "...";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(7, 318);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(47, 13);
+            this.label15.TabIndex = 22;
+            this.label15.Text = "Double :";
+            // 
+            // lblFloat
+            // 
+            this.lblFloat.AutoSize = true;
+            this.lblFloat.Location = new System.Drawing.Point(73, 288);
+            this.lblFloat.Name = "lblFloat";
+            this.lblFloat.Size = new System.Drawing.Size(16, 13);
+            this.lblFloat.TabIndex = 21;
+            this.lblFloat.Text = "...";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(6, 288);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(36, 13);
+            this.label18.TabIndex = 20;
+            this.label18.Text = "Float :";
+            // 
+            // lbl32BitsNS
+            // 
+            this.lbl32BitsNS.AutoSize = true;
+            this.lbl32BitsNS.Location = new System.Drawing.Point(74, 260);
+            this.lbl32BitsNS.Name = "lbl32BitsNS";
+            this.lbl32BitsNS.Size = new System.Drawing.Size(16, 13);
+            this.lbl32BitsNS.TabIndex = 19;
+            this.lbl32BitsNS.Text = "...";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(7, 260);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(64, 13);
+            this.label20.TabIndex = 18;
+            this.label20.Text = "32 bits (ns) :";
+            // 
+            // lbl32BitsSigned
+            // 
+            this.lbl32BitsSigned.AutoSize = true;
+            this.lbl32BitsSigned.Location = new System.Drawing.Point(74, 226);
+            this.lbl32BitsSigned.Name = "lbl32BitsSigned";
+            this.lbl32BitsSigned.Size = new System.Drawing.Size(16, 13);
+            this.lbl32BitsSigned.TabIndex = 17;
+            this.lbl32BitsSigned.Text = "...";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(7, 226);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(58, 13);
+            this.label22.TabIndex = 16;
+            this.label22.Text = "32 bits (s) :";
+            // 
+            // lbl16BitsNS
+            // 
+            this.lbl16BitsNS.AutoSize = true;
+            this.lbl16BitsNS.Location = new System.Drawing.Point(72, 191);
+            this.lbl16BitsNS.Name = "lbl16BitsNS";
+            this.lbl16BitsNS.Size = new System.Drawing.Size(16, 13);
+            this.lbl16BitsNS.TabIndex = 15;
+            this.lbl16BitsNS.Text = "...";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(5, 191);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(64, 13);
+            this.label16.TabIndex = 14;
+            this.label16.Text = "16 bits (ns) :";
+            // 
+            // lbl16BitSigned
+            // 
+            this.lbl16BitSigned.AutoSize = true;
+            this.lbl16BitSigned.Location = new System.Drawing.Point(72, 160);
+            this.lbl16BitSigned.Name = "lbl16BitSigned";
+            this.lbl16BitSigned.Size = new System.Drawing.Size(16, 13);
+            this.lbl16BitSigned.TabIndex = 11;
+            this.lbl16BitSigned.Text = "...";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(5, 160);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(58, 13);
+            this.label14.TabIndex = 10;
+            this.label14.Text = "16 bits (s) :";
+            // 
+            // lbl8BitsNS
+            // 
+            this.lbl8BitsNS.AutoSize = true;
+            this.lbl8BitsNS.Location = new System.Drawing.Point(72, 129);
+            this.lbl8BitsNS.Name = "lbl8BitsNS";
+            this.lbl8BitsNS.Size = new System.Drawing.Size(16, 13);
+            this.lbl8BitsNS.TabIndex = 9;
+            this.lbl8BitsNS.Text = "...";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(5, 129);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(58, 13);
+            this.label13.TabIndex = 8;
+            this.label13.Text = "8 bits (ns) :";
+            // 
+            // lbl8BitsSigned
+            // 
+            this.lbl8BitsSigned.AutoSize = true;
+            this.lbl8BitsSigned.Location = new System.Drawing.Point(72, 94);
+            this.lbl8BitsSigned.Name = "lbl8BitsSigned";
+            this.lbl8BitsSigned.Size = new System.Drawing.Size(16, 13);
+            this.lbl8BitsSigned.TabIndex = 7;
+            this.lbl8BitsSigned.Text = "...";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(5, 94);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(52, 13);
+            this.label11.TabIndex = 6;
+            this.label11.Text = "8 bits (s) :";
+            // 
+            // lblOctal
+            // 
+            this.lblOctal.AutoSize = true;
+            this.lblOctal.Location = new System.Drawing.Point(73, 62);
+            this.lblOctal.Name = "lblOctal";
+            this.lblOctal.Size = new System.Drawing.Size(16, 13);
+            this.lblOctal.TabIndex = 5;
+            this.lblOctal.Text = "...";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 62);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(38, 13);
+            this.label10.TabIndex = 4;
+            this.label10.Text = "Octal :";
+            // 
+            // lblBinary
+            // 
+            this.lblBinary.AutoSize = true;
+            this.lblBinary.Location = new System.Drawing.Point(73, 35);
+            this.lblBinary.Name = "lblBinary";
+            this.lblBinary.Size = new System.Drawing.Size(16, 13);
+            this.lblBinary.TabIndex = 3;
+            this.lblBinary.Text = "...";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(7, 35);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(45, 13);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "Binaire :";
+            // 
+            // lblChar
+            // 
+            this.lblChar.AutoSize = true;
+            this.lblChar.Location = new System.Drawing.Point(73, 7);
+            this.lblChar.Name = "lblChar";
+            this.lblChar.Size = new System.Drawing.Size(16, 13);
+            this.lblChar.TabIndex = 1;
+            this.lblChar.Text = "...";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(7, 7);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(59, 13);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "Caractère :";
+            // 
+            // btnOpenFile
+            // 
+            this.btnOpenFile.Location = new System.Drawing.Point(81, 416);
+            this.btnOpenFile.Name = "btnOpenFile";
+            this.btnOpenFile.Size = new System.Drawing.Size(122, 23);
+            this.btnOpenFile.TabIndex = 8;
+            this.btnOpenFile.Text = "Ouvrir un fichier";
+            this.btnOpenFile.UseVisualStyleBackColor = true;
+            this.btnOpenFile.Click += new System.EventHandler(this.btnOpenFile_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(907, 646);
+            this.Controls.Add(this.btnOpenFile);
             this.Controls.Add(this.tctrlData);
             this.Controls.Add(this.dataGridView);
             this.Name = "Form1";
@@ -241,6 +500,8 @@
             this.tctrlData.ResumeLayout(false);
             this.tpFile.ResumeLayout(false);
             this.tpFile.PerformLayout();
+            this.tpBite.ResumeLayout(false);
+            this.tpBite.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -265,6 +526,30 @@
         private System.Windows.Forms.Label lblShortName;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lblAttribute;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button btnOpenFile;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Label lblChar;
+        private System.Windows.Forms.Label lblDouble;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label lblFloat;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label lbl32BitsNS;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label lbl32BitsSigned;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label lbl16BitsNS;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label lbl16BitSigned;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label lbl8BitsNS;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label lbl8BitsSigned;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label lblOctal;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label lblBinary;
+        private System.Windows.Forms.Label label9;
     }
 }
 

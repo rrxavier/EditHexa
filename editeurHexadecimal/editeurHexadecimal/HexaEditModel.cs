@@ -30,37 +30,26 @@ namespace editeurHexadecimal
             { return _byteFile; }
         }
 
-        public string[][] Hexadecimal
-        {
-            get
-            {
-                double rawDivision = Convert.ToDouble(ByteFile.Length) / Convert.ToDouble(15);
-                int lineNb = Convert.ToInt32(rawDivision + (rawDivision.ToString().Contains('.') ? 1 : 0));
+        public string[][] Hexadecimal {
+            get {
+                double rawDivision = Convert.ToDouble(ByteFile.Length) / Convert.ToDouble(16);
+                int lineNb = (int)rawDivision + (rawDivision.ToString().Contains('.') ? 1 : 0);
 
                 string[][] myArray = new string[lineNb][];
 
                 int actualLine = -1;
-                for (int i = 0; i < ByteFile.Length; i++)
-                {
-                    int modulo = i % 16;
-                    if (modulo == 0)
-                    {
-                        actualLine++;
-                        myArray[actualLine] = new string[16];
-                        //Console.WriteLine();
-                    }
-                    myArray[actualLine][modulo] = String.Format("{0:X2}", Convert.ToInt32(ByteFile[i]));
-                    //Console.Write(String.Format("{0:X2}", Convert.ToInt32(ByteFile[i])));
-                }
 
-                /*foreach (string[] line in myArray)
-                {
-                    foreach (string item in line)
-                    {
-                        Console.Write(item);
+                for (int i = 0, j = 0; i < ByteFile.Length + lineNb; i++, j++) {
+                    int modulo = i % 17;
+                    if (modulo == 0) {
+                        actualLine++;
+                        myArray[actualLine] = new string[17];
+                        myArray[actualLine][0] = String.Format("{0:X5}0", actualLine);
+                        i++;
+                        modulo = i % 17;
                     }
-                    Console.Write(Environment.NewLine);
-                }*/
+                    myArray[actualLine][modulo] = String.Format("{0:X2}", Convert.ToInt32(ByteFile[j]));
+                }
 
                 return myArray;
             }

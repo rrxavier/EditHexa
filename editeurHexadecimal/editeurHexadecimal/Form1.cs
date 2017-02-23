@@ -15,11 +15,7 @@ namespace editeurHexadecimal {
         }
 
         private void Form1_Load(object sender, EventArgs e) {
-            string[][] allHexaArray = new string[][] {
-                                        new string[] {"100000", "0","1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"},
-                                        new string[] {"100000", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"},
-                                  };
-
+            HexaEditModel model = new HexaEditModel("C:\\Users\\CUGNIZ_INFO\\Desktop\\duelyst wallpaper\\8.jpg");
             DataTable table = new DataTable();
             List<DataColumn> dataColumnList = new List<DataColumn>();
             List<DataRow> dataRowList = new List<DataRow>();
@@ -59,7 +55,9 @@ namespace editeurHexadecimal {
                 table.Columns.Add(dataColumnList.ElementAt(i));
             }
 
-            foreach(string[] hexaArray in allHexaArray)
+            Console.WriteLine(model.Hexadecimal.ToString());
+
+            foreach(string[] hexaArray in model.Hexadecimal)
                 table.Rows.Add(hexaArray);
 
             dataGridView.DataSource = table;

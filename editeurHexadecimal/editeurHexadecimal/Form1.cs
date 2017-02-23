@@ -65,5 +65,9 @@ namespace editeurHexadecimal {
             dataGridView.DataSource = table;
             dataGridView.Columns[0].Width = 50;
         }
+
+        private void tpFile_Click(object sender, EventArgs e) {
+
+        }
     }
 }

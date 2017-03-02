@@ -80,6 +80,7 @@
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.Size = new System.Drawing.Size(437, 406);
             this.dataGridView.TabIndex = 3;
+            this.dataGridView.VirtualMode = true;
             // 
             // tctrlData
             // 

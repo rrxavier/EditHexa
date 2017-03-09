@@ -41,33 +41,10 @@ namespace editeurHexadecimal
                     dataColumnList.Add(new DataColumn());
                     dataColumnList.ElementAt(i).DataType = System.Type.GetType("System.String");
 
-                    if (i == 0) {
+                    if (i == 0)
                         dataColumnList.ElementAt(i).ColumnName = "Offset";
-                    } else if (i > 10) {
-                        switch (i) {
-                            // all the cases are shifted by 1 because of the offset. This word takes position 0 and shift every number after it by one 
-                            case 11:
-                                dataColumnList.ElementAt(i).ColumnName = "A";
-                                break;
-                            case 12:
-                                dataColumnList.ElementAt(i).ColumnName = "B";
-                                break;
-                            case 13:
-                                dataColumnList.ElementAt(i).ColumnName = "C";
-                                break;
-                            case 14:
-                                dataColumnList.ElementAt(i).ColumnName = "D";
-                                break;
-                            case 15:
-                                dataColumnList.ElementAt(i).ColumnName = "E";
-                                break;
-                            case 16:
-                                dataColumnList.ElementAt(i).ColumnName = "F";
-                                break;
-                        }
-                    } else {
-                        dataColumnList.ElementAt(i).ColumnName = (i - 1).ToString();
-                    }
+                    else
+                        dataColumnList.ElementAt(i).ColumnName = (i-1).ToString("X");
 
                     table.Columns.Add(dataColumnList.ElementAt(i));
                 }
@@ -98,10 +75,11 @@ namespace editeurHexadecimal
                         i++;
                         modulo = i % 17;
                     }
+
                     currentLine[modulo] = String.Format("{0:X2}", Convert.ToInt32(ByteFile[j])); //Hexadecimal representation of this byte
                 }
 
-                table.Rows.Add(currentLine); 
+                table.Rows.Add(currentLine);  //last line (not added in the loop)
                 return table;
             }
         }

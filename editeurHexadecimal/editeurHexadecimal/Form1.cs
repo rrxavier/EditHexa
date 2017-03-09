@@ -17,7 +17,7 @@ namespace editeurHexadecimal {
         }
 
         private void Form1_Load(object sender, EventArgs e) {
-            
+            dataGridView.RowCount = model.Hexadecimal.Rows.Count;
         }
 
         private void btnOpenFile_Click(object sender, EventArgs e) {
@@ -28,8 +28,14 @@ namespace editeurHexadecimal {
         }
 
         private void updateGridView() {
-            dataGridView.DataSource = model.Hexadecimal;
+            IEnumerable<DataRow> rows = model.Hexadecimal.AsEnumerable().Skip(19).Take(61);
+            DataTable table = rows.CopyToDataTable();
+            dataGridView.DataSource = table;
             dataGridView.Columns[0].Width = 80;
+        }
+
+        private void dataGridView_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e) {
+            e.Value = 0;
         }
     }
 }

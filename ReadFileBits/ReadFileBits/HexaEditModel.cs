@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Data;
 
 namespace ReadFileBits
 {
@@ -12,6 +13,7 @@ namespace ReadFileBits
     {
         string _filePath;
         byte[] _byteFile;
+        string[][] _hexaArray;
 
         public HexaEditModel(string filePath)
         {
@@ -35,31 +37,58 @@ namespace ReadFileBits
         {
             get
             {
-                double rawDivision = Convert.ToDouble(ByteFile.Length) / Convert.ToDouble(16);
-                int lineNb = (int)rawDivision + (rawDivision.ToString().Contains('.') ?  1 : 0);
-
-                string[][] myArray = new string[lineNb][];
-
-                int actualLine = -1;
-
-                for (int i = 0, j = 0; i < ByteFile.Length + lineNb; i++, j++)
+                if (_hexaArray == null)
                 {
-                    int modulo = i % 17;
-                    if (modulo == 0)
+                    double rawDivision = Convert.ToDouble(ByteFile.Length) / Convert.ToDouble(16);
+                    int lineNb = (int)rawDivision + (rawDivision.ToString().Contains('.') ? 1 : 0);
+
+                    string[][] myArray = new string[lineNb][];
+
+                    int actualLine = -1;
+
+                    for (int i = 0, j = 0; i < ByteFile.Length + lineNb; i++, j++)
                     {
-                        actualLine++;
-                        myArray[actualLine] = new string[17];
-                        myArray[actualLine][0] = String.Format("{0:X5}0", actualLine);
-                        i++;
-                        modulo = i % 17;
-                        //Console.WriteLine();
+                        int modulo = i % 17;
+                        if (modulo == 0)
+                        {
+                            actualLine++;
+                            myArray[actualLine] = new string[17];
+                            myArray[actualLine][0] = String.Format("{0:X5}0", actualLine);
+                            i++;
+                            modulo = i % 17;
+                        }
+                        myArray[actualLine][modulo] = String.Format("{0:X2}", Convert.ToInt32(ByteFile[j]));
                     }
-                    myArray[actualLine][modulo] = String.Format("{0:X2}", Convert.ToInt32(ByteFile[j]));
-                    //Console.Write(String.Format("{0:X2}", Convert.ToInt32(ByteFile[j])));
+
+                    _hexaArray = myArray;
                 }
 
-                return myArray;
+                return _hexaArray;
             }
+        }
+
+        public DataTable GetDataTable()
+        {
+            DataTable dt = new DataTable();
+
+            // Create columns
+            for (int i = 0; i < 17; i++)
+            {
+                DataColumn dc = new DataColumn();
+                dc.DataType = System.Type.GetType("System.String");
+
+                if (i == 0)
+                   dc.ColumnName = "Offset";
+                else
+                    dc.ColumnName = (i - 1).ToString();
+
+                dt.Columns.Add(dc);
+            }
+            
+            foreach (string[] line in this.Hexadecimal)
+                dt.Rows.Add(line);
+
+            return dt;
         }
 
         public string ConvertHexaToBinary(Point coords)

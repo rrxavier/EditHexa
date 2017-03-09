@@ -419,10 +419,9 @@ namespace ReadFileBits
             else
                 return "Données hors limite.";
         }
-    }
 
-    /*private static class ModelUtilities
-    {
+        private static class ModelUtilities
+        {
             /*if (coords.Y + 1 > 15)
                 coords2 = new Point(coords.X + 1, 0);
             else
@@ -433,14 +432,29 @@ namespace ReadFileBits
             else
                 return "Données hors limite.";*/
 
-    /*private static Point SetNewCoords(Point previousPoint, Point newPoint)
-    {
-        if (previousPoint.Y + 1 > 15)
-            newPoint = new Point(previousPoint.X + 1, 0);
-        else
-            newPoint = new Point(previousPoint.X, previousPoint.Y + 1);
+            private static Point SetNewCoords(Point previousPoint)
+            {
 
-        return newPoint;
+                if (previousPoint.Y + 1 > 15)
+                    return new Point(previousPoint.X + 1, 0);
+                else
+                    return new Point(previousPoint.X, previousPoint.Y + 1);
+            }
+
+            /// <summary>
+            /// Retourne le string de conversion À FINIR
+            /// </summary>
+            /// <param name="model"></param>
+            /// <param name="points"></param>
+            /// <returns></returns>
+            private static string ReturnConversionString(HexaEditModel model, params Point[] points)
+            {
+                if (model.Hexadecimal[points[points.Length - 1].X][points[points.Length - 1].Y] != null && points[points.Length - 1].X * 16 + points[points.Length - 1].Y < model.ByteFile.Length)
+                {
+                }
+
+                return "LEL";
+            }
+        }
     }
-}*/
 }

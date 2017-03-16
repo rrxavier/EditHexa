@@ -15,25 +15,39 @@ namespace ReadFileBits
         byte[] _byteFile;
         string[][] _hexaArray;
         DataTable _myDt;
+        DataTable _myAsciiDt;
 
+        /// <summary>
+        /// Main and only constructor.
+        /// </summary>
+        /// <param name="filePath">File path.</param>
         public HexaEditModel(string filePath)
         {
             this._filePath = filePath;
             this._byteFile = File.ReadAllBytes(_filePath);
         }
 
+        /// <summary>
+        /// File path.
+        /// </summary>
         public string FilePath
         {
             get
             { return _filePath; }
         }
 
+        /// <summary>
+        /// Bytes of each individual char in the file.
+        /// </summary>
         public byte[] ByteFile
         {
             get
             { return _byteFile; }
         }
 
+        /// <summary>
+        /// The ByteFile Array converted to Hexadecimal.
+        /// </summary>
         public string[][] Hexadecimal
         {
             get
@@ -68,7 +82,11 @@ namespace ReadFileBits
             }
         }
 
-        public DataTable GetDataTable()
+        /// <summary>
+        /// Returns the Hexadecimal Array in a datatable.
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetHexaDataTable()
         {
             if (_myDt == null)
             {
@@ -97,145 +115,190 @@ namespace ReadFileBits
             return _myDt;
         }
 
-        public DataTable GetDataTable(int startingRow, int nbRows)
+        /// <summary>
+        /// Returns a page of the Hexadecimal Array.
+        /// </summary>
+        /// <param name="startingRow">Starting row.</param>
+        /// <param name="nbRows">Number of rows to take.</param>
+        /// <returns></returns>
+        public DataTable GetHexaDataTable(int startingRow, int nbRows)
         {
-            IEnumerable<DataRow> rows = this.GetDataTable().AsEnumerable().Skip(startingRow - 1).Take(nbRows);
+            IEnumerable<DataRow> rows = this.GetHexaDataTable().AsEnumerable().Skip(startingRow - 1).Take(nbRows);
             return rows.CopyToDataTable();
         }
 
+        /// <summary>
+        /// Returns the Hexadecimal Array in a datatable.
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetAsciiDataTable()
+        {
+            if (_myDt == null)
+            {
+                DataTable dt = new DataTable();
+
+                for (int i = 0; i < 16; i++)
+                    dt.Columns.Add(new DataColumn());
+
+                foreach (string[] line in this.Hexadecimal)
+                {
+                    object[] convertedLine = new object[16];
+                    for (int i = 0; i < line.Length; i++)
+                    {
+                        if (line[i] != null && !(line[i].Length > 2))
+                            convertedLine[i - 1] = Convert.ToChar(Convert.ToUInt32(line[i], 16));
+                    }
+                    dt.Rows.Add(convertedLine);
+                }
+                _myAsciiDt = dt;
+            }
+
+            return _myAsciiDt;
+        }
+
+        /// <summary>
+        /// Returns a page of the Hexadecimal Array.
+        /// </summary>
+        /// <param name="startingRow">Starting row.</param>
+        /// <param name="nbRows">Number of rows to take.</param>
+        /// <returns></returns>
+        public DataTable GetAsciiDataTable(int startingRow, int nbRows)
+        {
+            IEnumerable<DataRow> rows = this.GetAsciiDataTable().AsEnumerable().Skip(startingRow - 1).Take(nbRows);
+            return rows.CopyToDataTable();
+        }
+
+        /// <summary>
+        /// Converts the chosen Hexadecimal to binary.
+        /// </summary>
+        /// <param name="coords">Coords of the first point.</param>
+        /// <returns></returns>
         public string ConvertHexaToBinary(Point coords)
         {
-            return Convert.ToString(Convert.ToInt32(this.Hexadecimal[coords.X][coords.Y], 16), 2);
+            return Convert.ToString(Convert.ToInt32(this.Hexadecimal[coords.Y][coords.X], 16), 2);
         }
 
+        /// <summary>
+        /// Converts the chosen Hexadecimal to decimal.
+        /// </summary>
+        /// <param name="coords">Coords of the first point.</param>
+        /// <returns></returns>
         public string ConvertHexaToDecimal(Point coords)
         {
-            return Convert.ToInt32(this.Hexadecimal[coords.X][coords.Y], 16).ToString();
+            return Convert.ToInt32(this.Hexadecimal[coords.Y][coords.X], 16).ToString();
         }
 
+        /// <summary>
+        /// Converts the chosen Hexadecimal to octal.
+        /// </summary>
+        /// <param name="coords">Coords of the first point.</param>
+        /// <returns></returns>
         public string ConvertHexaToOctal(Point coords)
         {
-            return Convert.ToString(Convert.ToInt32(this.Hexadecimal[coords.X][coords.Y], 16), 8);
+            return Convert.ToString(Convert.ToInt32(this.Hexadecimal[coords.Y][coords.X], 16), 8);
         }
 
+        /// <summary>
+        /// Converts the chosen Hexadecimal to 8 bits signed.
+        /// </summary>
+        /// <param name="coords">Coords of the first point.</param>
+        /// <returns></returns>
         public string ConvertHexaTo8BitsSigned(Point coords)
         {
-            return Convert.ToString(Convert.ToSByte(this.Hexadecimal[coords.X][coords.Y], 16)); // 8bits = 2 hexadecimal digits
+            return Convert.ToString(Convert.ToSByte(this.Hexadecimal[coords.Y][coords.X], 16)); // 8bits = 2 hexadecimal digits
         }
 
+        /// <summary>
+        /// Converts the chosen Hexadecimal to 8 bits unsigned.
+        /// </summary>
+        /// <param name="coords">Coords of the first point.</param>
+        /// <returns></returns>
         public string ConvertHexaTo8BitsUnsigned(Point coords)
         {
-            return Convert.ToString(Convert.ToByte(this.Hexadecimal[coords.X][coords.Y], 16)); // 8bits = 2 hexadecimal digits
+            return Convert.ToString(Convert.ToByte(this.Hexadecimal[coords.Y][coords.X], 16)); // 8bits = 2 hexadecimal digits
         }
 
+        /// <summary>
+        /// Converts the chosen Hexadecimal to 16 bits signed.
+        /// </summary>
+        /// <param name="coords">Coords of the first point.</param>
+        /// <returns></returns>
         public string ConvertHexaTo16BitsSigned(Point coords)
         {
             Point coords2;
 
-            // If it is at the end of the line.
-            if (coords.Y + 1 > 15)
-                coords2 = new Point(coords.X + 1, 0);
-            else
-                coords2 = new Point(coords.X, coords.Y + 1);
+            coords2 = GetNewCoords(coords);
 
-            if (this.Hexadecimal[coords2.X][coords2.Y] != null && coords2.X * 16 + coords2.Y < ByteFile.Length)
-                return Convert.ToString(Convert.ToInt16(this.Hexadecimal[coords2.X][coords2.Y] + this.Hexadecimal[coords.X][coords.Y], 16)); // 16bits = 4 hexadecimal digits
+            if (this.Hexadecimal[coords2.Y][coords2.X] != null && coords2.Y * 16 + coords2.X < ByteFile.Length)
+                return Convert.ToString(Convert.ToInt16(this.Hexadecimal[coords2.Y][coords2.X] + this.Hexadecimal[coords.Y][coords.X], 16)); // 16bits = 4 hexadecimal digits
             else
                 return "Données hors limite.";
         }
 
+        /// <summary>
+        /// Converts the chosen Hexadecimal to 16 bits unsigned.
+        /// </summary>
+        /// <param name="coords">Coords of the first point.</param>
+        /// <returns></returns>
         public string ConvertHexaTo16BitsUnsigned(Point coords)
         {
             Point coords2;
 
-            // If it is at the end of the line.
-            if (coords.Y + 1 > 15)
-                coords2 = new Point(coords.X + 1, 0);
-            else
-                coords2 = new Point(coords.X, coords.Y + 1);
+            coords2 = GetNewCoords(coords);
 
-            if (this.Hexadecimal[coords2.X][coords2.Y] != null && coords2.X * 16 + coords2.Y < ByteFile.Length)
-                return Convert.ToString(Convert.ToUInt16(this.Hexadecimal[coords2.X][coords2.Y] + this.Hexadecimal[coords.X][coords.Y], 16)); // 16bits = 4 hexadecimal digits
+            if (this.Hexadecimal[coords2.Y][coords2.X] != null && coords2.Y * 16 + coords2.X < ByteFile.Length)
+                return Convert.ToString(Convert.ToUInt16(this.Hexadecimal[coords2.Y][coords2.X] + this.Hexadecimal[coords.Y][coords.X], 16)); // 16bits = 4 hexadecimal digits
             else
                 return "Données hors limite.";
         }
 
+        /// <summary>
+        /// Converts the chosen Hexadecimal to 32 bits signed.
+        /// </summary>
+        /// <param name="coords">Coords of the first point.</param>
+        /// <returns></returns>
         public string ConvertHexaTo32BitsSigned(Point coords)
         {
             Point coords2;
             Point coords3;
             Point coords4;
 
+            coords2 = GetNewCoords(coords);
+            coords3 = GetNewCoords(coords2);
+            coords4 = GetNewCoords(coords3);
 
-            // If it is at the end of the line.
-            if (coords.Y + 1 > 15)
-                coords2 = new Point(coords.X + 1, 0);
-            else
-                coords2 = new Point(coords.X, coords.Y + 1);
-
-            if (this.Hexadecimal[coords2.X][coords2.Y] == null && coords2.X * 16 + coords2.Y > ByteFile.Length)
-                return "Données hors limite.";
-
-
-            // If it is at the end of the line.
-            if (coords2.Y + 1 > 15)
-                coords3 = new Point(coords2.X + 1, 0);
-            else
-                coords3 = new Point(coords2.X, coords2.Y + 1);
-
-            if (this.Hexadecimal[coords3.X][coords3.Y] == null && coords3.X * 16 + coords3.Y > ByteFile.Length)
-                return "Données hors limite.";
-
-            // If it is at the end of the line.
-            if (coords3.Y + 1 > 15)
-                coords4 = new Point(coords3.X + 1, 0);
-            else
-                coords4 = new Point(coords3.X, coords3.Y + 1);
-
-            if (this.Hexadecimal[coords4.X][coords4.Y] != null && coords4.X * 16 + coords4.Y < ByteFile.Length)
-                return Convert.ToString(Convert.ToInt32(this.Hexadecimal[coords4.X][coords4.Y] + this.Hexadecimal[coords3.X][coords3.Y] + this.Hexadecimal[coords2.X][coords2.Y] + this.Hexadecimal[coords.X][coords.Y], 16)); //32bits = 8 hexadecimal digits
+            if (this.Hexadecimal[coords4.Y][coords4.X] != null && coords4.Y * 16 + coords4.X < ByteFile.Length)
+                return Convert.ToString(Convert.ToInt32(this.Hexadecimal[coords4.Y][coords4.X] + this.Hexadecimal[coords3.Y][coords3.X] + this.Hexadecimal[coords2.Y][coords2.X] + this.Hexadecimal[coords.Y][coords.X], 16)); //32bits = 8 hexadecimal digits
             else
                 return "Données hors limite.";
         }
 
+        /// <summary>
+        /// Converts the chosen Hexadecimal to 32 bits unsigned.
+        /// </summary>
+        /// <param name="coords">Coords of the first point.</param>
+        /// <returns></returns>
         public string ConvertHexaTo32BitsUnsigned(Point coords)
         {
             Point coords2;
             Point coords3;
             Point coords4;
 
+            coords2 = GetNewCoords(coords);
+            coords3 = GetNewCoords(coords2);
+            coords4 = GetNewCoords(coords3);
 
-            // If it is at the end of the line.
-            if (coords.Y + 1 > 15)
-                coords2 = new Point(coords.X + 1, 0);
-            else
-                coords2 = new Point(coords.X, coords.Y + 1);
-
-            if (this.Hexadecimal[coords2.X][coords2.Y] == null && coords2.X * 16 + coords2.Y > ByteFile.Length)
-                return "Données hors limite.";
-
-
-            // If it is at the end of the line.
-            if (coords2.Y + 1 > 15)
-                coords3 = new Point(coords2.X + 1, 0);
-            else
-                coords3 = new Point(coords2.X, coords2.Y + 1);
-
-            if (this.Hexadecimal[coords3.X][coords3.Y] == null && coords3.X * 16 + coords3.Y > ByteFile.Length)
-                return "Données hors limite.";
-
-            // If it is at the end of the line.
-            if (coords3.Y + 1 > 15)
-                coords4 = new Point(coords3.X + 1, 0);
-            else
-                coords4 = new Point(coords3.X, coords3.Y + 1);
-
-            if (this.Hexadecimal[coords4.X][coords4.Y] != null && coords4.X * 16 + coords4.Y < ByteFile.Length)
-                return Convert.ToString(Convert.ToUInt32(this.Hexadecimal[coords4.X][coords4.Y] + this.Hexadecimal[coords3.X][coords3.Y] + this.Hexadecimal[coords2.X][coords2.Y] + this.Hexadecimal[coords.X][coords.Y], 16)); //32bits = 8 hexadecimal digits
+            if (this.Hexadecimal[coords4.Y][coords4.X] != null && coords4.Y * 16 + coords4.X < ByteFile.Length)
+                return Convert.ToString(Convert.ToUInt32(this.Hexadecimal[coords4.Y][coords4.X] + this.Hexadecimal[coords3.Y][coords3.X] + this.Hexadecimal[coords2.Y][coords2.X] + this.Hexadecimal[coords.Y][coords.X], 16)); //32bits = 8 hexadecimal digits
             else
                 return "Données hors limite.";
         }
 
+        /// <summary>
+        /// Converts the chosen Hexadecimal to 64 bits signed.
+        /// </summary>
+        /// <param name="coords">Coords of the first point.</param>
+        /// <returns></returns>
         public string ConvertHexaTo64BitsSigned(Point coords)
         {
             Point coords2;
@@ -246,107 +309,53 @@ namespace ReadFileBits
             Point coords7;
             Point coords8;
 
+            coords2 = GetNewCoords(coords);
+            coords3 = GetNewCoords(coords2);
+            coords4 = GetNewCoords(coords3);
+            coords5 = GetNewCoords(coords4);
+            coords6 = GetNewCoords(coords5);
+            coords7 = GetNewCoords(coords6);
+            coords8 = GetNewCoords(coords7);
 
-            // If it is at the end of the line.
-            if (coords.Y + 1 > 15)
-                coords2 = new Point(coords.X + 1, 0);
-            else
-                coords2 = new Point(coords.X, coords.Y + 1);
-
-            if (this.Hexadecimal[coords2.X][coords2.Y] == null && coords2.X * 16 + coords2.Y > ByteFile.Length)
-                return "Données hors limite.";
-
-
-            // If it is at the end of the line.
-            if (coords2.Y + 1 > 15)
-                coords3 = new Point(coords2.X + 1, 0);
-            else
-                coords3 = new Point(coords2.X, coords2.Y + 1);
-
-            if (this.Hexadecimal[coords3.X][coords3.Y] == null && coords3.X * 16 + coords3.Y > ByteFile.Length)
-                return "Données hors limite.";
-
-            // If it is at the end of the line.
-            if (coords3.Y + 1 > 15)
-                coords4 = new Point(coords3.X + 1, 0);
-            else
-                coords4 = new Point(coords3.X, coords3.Y + 1);
-
-            // If it is at the end of the line.
-            if (coords4.Y + 1 > 15)
-                coords5 = new Point(coords4.X + 1, 0);
-            else
-                coords5 = new Point(coords4.X, coords4.Y + 1);
-
-            // If it is at the end of the line.
-            if (coords5.Y + 1 > 15)
-                coords6 = new Point(coords5.X + 1, 0);
-            else
-                coords6 = new Point(coords5.X, coords5.Y + 1);
-
-            // If it is at the end of the line.
-            if (coords6.Y + 1 > 15)
-                coords7 = new Point(coords6.X + 1, 0);
-            else
-                coords7 = new Point(coords6.X, coords6.Y + 1);
-
-            // If it is at the end of the line.
-            if (coords7.Y + 1 > 15)
-                coords8 = new Point(coords7.X + 1, 0);
-            else
-                coords8 = new Point(coords7.X, coords7.Y + 1);
-
-            if (this.Hexadecimal[coords8.X][coords8.Y] != null && coords8.X * 16 + coords8.Y < ByteFile.Length)
-                return Convert.ToString(Convert.ToInt64(this.Hexadecimal[coords8.X][coords8.Y] +
-                    this.Hexadecimal[coords7.X][coords7.Y] +
-                    this.Hexadecimal[coords6.X][coords6.Y] +
-                    this.Hexadecimal[coords5.X][coords5.Y] +
-                    this.Hexadecimal[coords4.X][coords4.Y] +
-                    this.Hexadecimal[coords3.X][coords3.Y] +
-                    this.Hexadecimal[coords2.X][coords2.Y] +
-                    this.Hexadecimal[coords.X][coords.Y], 16)); //32bits = 8 hexadecimal digits
+            if (this.Hexadecimal[coords8.Y][coords8.X] != null && coords8.Y * 16 + coords8.X < ByteFile.Length)
+                return Convert.ToString(Convert.ToInt64(this.Hexadecimal[coords8.Y][coords8.X] +
+                    this.Hexadecimal[coords7.Y][coords7.X] +
+                    this.Hexadecimal[coords6.Y][coords6.X] +
+                    this.Hexadecimal[coords5.Y][coords5.X] +
+                    this.Hexadecimal[coords4.Y][coords4.X] +
+                    this.Hexadecimal[coords3.Y][coords3.X] +
+                    this.Hexadecimal[coords2.Y][coords2.X] +
+                    this.Hexadecimal[coords.Y][coords.X], 16)); //32bits = 8 hexadecimal digits
             else
                 return "Données hors limite.";
         }
 
+        /// <summary>
+        /// Converts the chosen Hexadecimal to Float.
+        /// </summary>
+        /// <param name="coords">Coords of the first point.</param>
+        /// <returns></returns>
         public string ConvertHexaToFloat(Point coords)
         {
             Point coords2;
             Point coords3;
             Point coords4;
 
+            coords2 = GetNewCoords(coords);
+            coords3 = GetNewCoords(coords2);
+            coords4 = GetNewCoords(coords3);
 
-            // If it is at the end of the line.
-            if (coords.Y + 1 > 15)
-                coords2 = new Point(coords.X + 1, 0);
-            else
-                coords2 = new Point(coords.X, coords.Y + 1);
-
-            if (this.Hexadecimal[coords2.X][coords2.Y] == null && coords2.X * 16 + coords2.Y > ByteFile.Length)
-                return "Données hors limite.";
-
-
-            // If it is at the end of the line.
-            if (coords2.Y + 1 > 15)
-                coords3 = new Point(coords2.X + 1, 0);
-            else
-                coords3 = new Point(coords2.X, coords2.Y + 1);
-
-            if (this.Hexadecimal[coords3.X][coords3.Y] == null && coords3.X * 16 + coords3.Y > ByteFile.Length)
-                return "Données hors limite.";
-
-            // If it is at the end of the line.
-            if (coords3.Y + 1 > 15)
-                coords4 = new Point(coords3.X + 1, 0);
-            else
-                coords4 = new Point(coords3.X, coords3.Y + 1);
-
-            if (this.Hexadecimal[coords4.X][coords4.Y] != null && coords4.X * 16 + coords4.Y < ByteFile.Length)
-                return Convert.ToString(BitConverter.ToSingle(BitConverter.GetBytes(uint.Parse(this.Hexadecimal[coords4.X][coords4.Y] + this.Hexadecimal[coords3.X][coords3.Y] + this.Hexadecimal[coords2.X][coords2.Y] + this.Hexadecimal[coords.X][coords.Y], System.Globalization.NumberStyles.AllowHexSpecifier)), 0)); //32bits = 8 hexadecimal digits
+            if (this.Hexadecimal[coords4.Y][coords4.X] != null && coords4.Y * 16 + coords4.X < ByteFile.Length)
+                return Convert.ToString(BitConverter.ToSingle(BitConverter.GetBytes(uint.Parse(this.Hexadecimal[coords4.Y][coords4.X] + this.Hexadecimal[coords3.Y][coords3.X] + this.Hexadecimal[coords2.Y][coords2.X] + this.Hexadecimal[coords.Y][coords.X], System.Globalization.NumberStyles.AllowHexSpecifier)), 0)); //32bits = 8 hexadecimal digits
             else
                 return "Données hors limite.";
         }
 
+        /// <summary>
+        /// Converts the chosen Hexadecimal to Double.
+        /// </summary>
+        /// <param name="coords">Coords of the first point.</param>
+        /// <returns></returns>
         public string ConvertHexaToDouble(Point coords)
         {
             Point coords2;
@@ -357,104 +366,38 @@ namespace ReadFileBits
             Point coords7;
             Point coords8;
 
-
-            // If it is at the end of the line.
-            if (coords.Y + 1 > 15)
-                coords2 = new Point(coords.X + 1, 0);
-            else
-                coords2 = new Point(coords.X, coords.Y + 1);
-
-            if (this.Hexadecimal[coords2.X][coords2.Y] == null && coords2.X * 16 + coords2.Y > ByteFile.Length)
-                return "Données hors limite.";
-
-
-            // If it is at the end of the line.
-            if (coords2.Y + 1 > 15)
-                coords3 = new Point(coords2.X + 1, 0);
-            else
-                coords3 = new Point(coords2.X, coords2.Y + 1);
-
-            if (this.Hexadecimal[coords3.X][coords3.Y] == null && coords3.X * 16 + coords3.Y > ByteFile.Length)
-                return "Données hors limite.";
-
-            // If it is at the end of the line.
-            if (coords3.Y + 1 > 15)
-                coords4 = new Point(coords3.X + 1, 0);
-            else
-                coords4 = new Point(coords3.X, coords3.Y + 1);
-
-            // If it is at the end of the line.
-            if (coords4.Y + 1 > 15)
-                coords5 = new Point(coords4.X + 1, 0);
-            else
-                coords5 = new Point(coords4.X, coords4.Y + 1);
-
-            // If it is at the end of the line.
-            if (coords5.Y + 1 > 15)
-                coords6 = new Point(coords5.X + 1, 0);
-            else
-                coords6 = new Point(coords5.X, coords5.Y + 1);
-
-            // If it is at the end of the line.
-            if (coords6.Y + 1 > 15)
-                coords7 = new Point(coords6.X + 1, 0);
-            else
-                coords7 = new Point(coords6.X, coords6.Y + 1);
-
-            // If it is at the end of the line.
-            if (coords7.Y + 1 > 15)
-                coords8 = new Point(coords7.X + 1, 0);
-            else
-                coords8 = new Point(coords7.X, coords7.Y + 1);
-
-            if (this.Hexadecimal[coords8.X][coords8.Y] != null && coords8.X * 16 + coords8.Y < ByteFile.Length)
-                return Convert.ToString(BitConverter.ToDouble(BitConverter.GetBytes(Convert.ToInt64(this.Hexadecimal[coords8.X][coords8.Y] +
-                    this.Hexadecimal[coords7.X][coords7.Y] +
-                    this.Hexadecimal[coords6.X][coords6.Y] +
-                    this.Hexadecimal[coords5.X][coords5.Y] +
-                    this.Hexadecimal[coords4.X][coords4.Y] +
-                    this.Hexadecimal[coords3.X][coords3.Y] +
-                    this.Hexadecimal[coords2.X][coords2.Y] +
-                    this.Hexadecimal[coords.X][coords.Y], 16)), 0)); //32bits = 8 hexadecimal digits
+            coords2 = GetNewCoords(coords);
+            coords3 = GetNewCoords(coords2);
+            coords4 = GetNewCoords(coords3);
+            coords5 = GetNewCoords(coords4);
+            coords6 = GetNewCoords(coords5);
+            coords7 = GetNewCoords(coords6);
+            coords8 = GetNewCoords(coords7);
+            
+            if (this.Hexadecimal[coords8.Y][coords8.X] != null && coords8.Y * 16 + coords8.X < ByteFile.Length)
+                return Convert.ToString(BitConverter.ToDouble(BitConverter.GetBytes(Convert.ToInt64(this.Hexadecimal[coords8.Y][coords8.X] +
+                    this.Hexadecimal[coords7.Y][coords7.X] +
+                    this.Hexadecimal[coords6.Y][coords6.X] +
+                    this.Hexadecimal[coords5.Y][coords5.X] +
+                    this.Hexadecimal[coords4.Y][coords4.X] +
+                    this.Hexadecimal[coords3.Y][coords3.X] +
+                    this.Hexadecimal[coords2.Y][coords2.X] +
+                    this.Hexadecimal[coords.Y][coords.X], 16)), 0)); // 64bits = 8 hexadecimal digits
             else
                 return "Données hors limite.";
         }
 
-        private static class ModelUtilities
+        /// <summary>
+        /// Return the next point after the "previousPoint".
+        /// </summary>
+        /// <param name="previousPoint">Starting point.</param>
+        /// <returns>Next point.</returns>
+        private static Point GetNewCoords(Point previousPoint)
         {
-            /*if (coords.Y + 1 > 15)
-                coords2 = new Point(coords.X + 1, 0);
+            if (previousPoint.X + 1 > 15)
+                return new Point(1, previousPoint.Y + 1);
             else
-                coords2 = new Point(coords.X, coords.Y + 1);
-
-            if (this.Hexadecimal[coords2.X][coords2.Y] != null && coords2.X* 16 + coords2.Y<ByteFile.Length)
-                return Convert.ToString(Convert.ToInt16(this.Hexadecimal[coords2.X][coords2.Y] + this.Hexadecimal[coords.X][coords.Y], 16)); // 16bits = 4 hexadecimal digits
-            else
-                return "Données hors limite.";*/
-
-            private static Point SetNewCoords(Point previousPoint)
-            {
-
-                if (previousPoint.Y + 1 > 15)
-                    return new Point(previousPoint.X + 1, 0);
-                else
-                    return new Point(previousPoint.X, previousPoint.Y + 1);
-            }
-
-            /// <summary>
-            /// Retourne le string de conversion À FINIR
-            /// </summary>
-            /// <param name="model"></param>
-            /// <param name="points"></param>
-            /// <returns></returns>
-            private static string ReturnConversionString(HexaEditModel model, params Point[] points)
-            {
-                if (model.Hexadecimal[points[points.Length - 1].X][points[points.Length - 1].Y] != null && points[points.Length - 1].X * 16 + points[points.Length - 1].Y < model.ByteFile.Length)
-                {
-                }
-
-                return "LEL";
-            }
+                return new Point(previousPoint.X + 1, previousPoint.Y);
         }
     }
 }

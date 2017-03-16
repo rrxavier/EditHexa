@@ -24,7 +24,8 @@
         /// </summary>
         private void InitializeComponent() {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.dataGridView = new System.Windows.Forms.DataGridView();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.hexaGridView = new System.Windows.Forms.DataGridView();
             this.tctrlData = new System.Windows.Forms.TabControl();
             this.tpFile = new System.Windows.Forms.TabPage();
             this.lblShortName = new System.Windows.Forms.Label();
@@ -42,6 +43,8 @@
             this.lblName = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tpBite = new System.Windows.Forms.TabPage();
+            this.lbl64BitsSigned = new System.Windows.Forms.Label();
+            this.lbl11 = new System.Windows.Forms.Label();
             this.lblDouble = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.lblFloat = new System.Windows.Forms.Label();
@@ -66,17 +69,22 @@
             this.label8 = new System.Windows.Forms.Label();
             this.btnOpenFile = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
+            this.asciiGridView = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.hexaGridView)).BeginInit();
             this.tctrlData.SuspendLayout();
             this.tpFile.SuspendLayout();
             this.tpBite.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.asciiGridView)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView
+            // hexaGridView
             // 
-            this.dataGridView.AllowUserToAddRows = false;
-            this.dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCellsExceptHeader;
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.hexaGridView.AllowUserToAddRows = false;
+            this.hexaGridView.AllowUserToResizeColumns = false;
+            this.hexaGridView.AllowUserToResizeRows = false;
+            this.hexaGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.hexaGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+            this.hexaGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -84,12 +92,15 @@
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridView.Location = new System.Drawing.Point(353, 33);
-            this.dataGridView.Name = "dataGridView";
-            this.dataGridView.Size = new System.Drawing.Size(448, 397);
-            this.dataGridView.TabIndex = 3;
-            this.dataGridView.VirtualMode = true;
+            this.hexaGridView.DefaultCellStyle = dataGridViewCellStyle1;
+            this.hexaGridView.Location = new System.Drawing.Point(275, 33);
+            this.hexaGridView.MinimumSize = new System.Drawing.Size(406, 397);
+            this.hexaGridView.Name = "hexaGridView";
+            this.hexaGridView.RowHeadersVisible = false;
+            this.hexaGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.hexaGridView.Size = new System.Drawing.Size(406, 397);
+            this.hexaGridView.TabIndex = 3;
+            this.hexaGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellClick);
             // 
             // tctrlData
             // 
@@ -98,7 +109,7 @@
             this.tctrlData.Location = new System.Drawing.Point(14, 11);
             this.tctrlData.Name = "tctrlData";
             this.tctrlData.SelectedIndex = 0;
-            this.tctrlData.Size = new System.Drawing.Size(297, 399);
+            this.tctrlData.Size = new System.Drawing.Size(242, 419);
             this.tctrlData.TabIndex = 7;
             // 
             // tpFile
@@ -120,7 +131,7 @@
             this.tpFile.Location = new System.Drawing.Point(4, 22);
             this.tpFile.Name = "tpFile";
             this.tpFile.Padding = new System.Windows.Forms.Padding(3);
-            this.tpFile.Size = new System.Drawing.Size(289, 373);
+            this.tpFile.Size = new System.Drawing.Size(234, 393);
             this.tpFile.TabIndex = 0;
             this.tpFile.Text = "Détails Fichier";
             this.tpFile.UseVisualStyleBackColor = true;
@@ -253,6 +264,8 @@
             // 
             // tpBite
             // 
+            this.tpBite.Controls.Add(this.lbl64BitsSigned);
+            this.tpBite.Controls.Add(this.lbl11);
             this.tpBite.Controls.Add(this.lblDouble);
             this.tpBite.Controls.Add(this.label15);
             this.tpBite.Controls.Add(this.lblFloat);
@@ -278,15 +291,33 @@
             this.tpBite.Location = new System.Drawing.Point(4, 22);
             this.tpBite.Name = "tpBite";
             this.tpBite.Padding = new System.Windows.Forms.Padding(3);
-            this.tpBite.Size = new System.Drawing.Size(289, 373);
+            this.tpBite.Size = new System.Drawing.Size(234, 393);
             this.tpBite.TabIndex = 1;
             this.tpBite.Text = "Détails Octet";
             this.tpBite.UseVisualStyleBackColor = true;
             // 
+            // lbl64BitsSigned
+            // 
+            this.lbl64BitsSigned.AutoSize = true;
+            this.lbl64BitsSigned.Location = new System.Drawing.Point(72, 291);
+            this.lbl64BitsSigned.Name = "lbl64BitsSigned";
+            this.lbl64BitsSigned.Size = new System.Drawing.Size(16, 13);
+            this.lbl64BitsSigned.TabIndex = 25;
+            this.lbl64BitsSigned.Text = "...";
+            // 
+            // lbl11
+            // 
+            this.lbl11.AutoSize = true;
+            this.lbl11.Location = new System.Drawing.Point(5, 291);
+            this.lbl11.Name = "lbl11";
+            this.lbl11.Size = new System.Drawing.Size(58, 13);
+            this.lbl11.TabIndex = 24;
+            this.lbl11.Text = "64 bits (s) :";
+            // 
             // lblDouble
             // 
             this.lblDouble.AutoSize = true;
-            this.lblDouble.Location = new System.Drawing.Point(74, 318);
+            this.lblDouble.Location = new System.Drawing.Point(74, 345);
             this.lblDouble.Name = "lblDouble";
             this.lblDouble.Size = new System.Drawing.Size(16, 13);
             this.lblDouble.TabIndex = 23;
@@ -295,7 +326,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(7, 318);
+            this.label15.Location = new System.Drawing.Point(7, 345);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(47, 13);
             this.label15.TabIndex = 22;
@@ -304,7 +335,7 @@
             // lblFloat
             // 
             this.lblFloat.AutoSize = true;
-            this.lblFloat.Location = new System.Drawing.Point(73, 288);
+            this.lblFloat.Location = new System.Drawing.Point(73, 320);
             this.lblFloat.Name = "lblFloat";
             this.lblFloat.Size = new System.Drawing.Size(16, 13);
             this.lblFloat.TabIndex = 21;
@@ -313,7 +344,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(6, 288);
+            this.label18.Location = new System.Drawing.Point(6, 320);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(36, 13);
             this.label18.TabIndex = 20;
@@ -322,7 +353,7 @@
             // lbl32BitsNS
             // 
             this.lbl32BitsNS.AutoSize = true;
-            this.lbl32BitsNS.Location = new System.Drawing.Point(74, 260);
+            this.lbl32BitsNS.Location = new System.Drawing.Point(72, 259);
             this.lbl32BitsNS.Name = "lbl32BitsNS";
             this.lbl32BitsNS.Size = new System.Drawing.Size(16, 13);
             this.lbl32BitsNS.TabIndex = 19;
@@ -331,7 +362,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(7, 260);
+            this.label20.Location = new System.Drawing.Point(5, 259);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(64, 13);
             this.label20.TabIndex = 18;
@@ -340,7 +371,7 @@
             // lbl32BitsSigned
             // 
             this.lbl32BitsSigned.AutoSize = true;
-            this.lbl32BitsSigned.Location = new System.Drawing.Point(74, 226);
+            this.lbl32BitsSigned.Location = new System.Drawing.Point(72, 225);
             this.lbl32BitsSigned.Name = "lbl32BitsSigned";
             this.lbl32BitsSigned.Size = new System.Drawing.Size(16, 13);
             this.lbl32BitsSigned.TabIndex = 17;
@@ -349,7 +380,7 @@
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(7, 226);
+            this.label22.Location = new System.Drawing.Point(5, 225);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(58, 13);
             this.label22.TabIndex = 16;
@@ -358,7 +389,7 @@
             // lbl16BitsNS
             // 
             this.lbl16BitsNS.AutoSize = true;
-            this.lbl16BitsNS.Location = new System.Drawing.Point(72, 191);
+            this.lbl16BitsNS.Location = new System.Drawing.Point(72, 190);
             this.lbl16BitsNS.Name = "lbl16BitsNS";
             this.lbl16BitsNS.Size = new System.Drawing.Size(16, 13);
             this.lbl16BitsNS.TabIndex = 15;
@@ -367,7 +398,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(5, 191);
+            this.label16.Location = new System.Drawing.Point(5, 190);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(64, 13);
             this.label16.TabIndex = 14;
@@ -376,7 +407,7 @@
             // lbl16BitSigned
             // 
             this.lbl16BitSigned.AutoSize = true;
-            this.lbl16BitSigned.Location = new System.Drawing.Point(72, 160);
+            this.lbl16BitSigned.Location = new System.Drawing.Point(72, 159);
             this.lbl16BitSigned.Name = "lbl16BitSigned";
             this.lbl16BitSigned.Size = new System.Drawing.Size(16, 13);
             this.lbl16BitSigned.TabIndex = 11;
@@ -385,7 +416,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(5, 160);
+            this.label14.Location = new System.Drawing.Point(5, 159);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(58, 13);
             this.label14.TabIndex = 10;
@@ -483,7 +514,7 @@
             // 
             // btnOpenFile
             // 
-            this.btnOpenFile.Location = new System.Drawing.Point(81, 416);
+            this.btnOpenFile.Location = new System.Drawing.Point(61, 446);
             this.btnOpenFile.Name = "btnOpenFile";
             this.btnOpenFile.Size = new System.Drawing.Size(122, 23);
             this.btnOpenFile.TabIndex = 8;
@@ -495,30 +526,54 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // asciiGridView
+            // 
+            this.asciiGridView.AllowUserToAddRows = false;
+            this.asciiGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCellsExceptHeader;
+            this.asciiGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.asciiGridView.DefaultCellStyle = dataGridViewCellStyle2;
+            this.asciiGridView.Location = new System.Drawing.Point(711, 33);
+            this.asciiGridView.MinimumSize = new System.Drawing.Size(323, 397);
+            this.asciiGridView.Name = "asciiGridView";
+            this.asciiGridView.Size = new System.Drawing.Size(323, 397);
+            this.asciiGridView.TabIndex = 9;
+            this.asciiGridView.VirtualMode = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(907, 646);
+            this.ClientSize = new System.Drawing.Size(1057, 484);
+            this.Controls.Add(this.asciiGridView);
             this.Controls.Add(this.btnOpenFile);
             this.Controls.Add(this.tctrlData);
-            this.Controls.Add(this.dataGridView);
+            this.Controls.Add(this.hexaGridView);
+            this.MinimumSize = new System.Drawing.Size(1073, 522);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
+            this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
+            ((System.ComponentModel.ISupportInitialize)(this.hexaGridView)).EndInit();
             this.tctrlData.ResumeLayout(false);
             this.tpFile.ResumeLayout(false);
             this.tpFile.PerformLayout();
             this.tpBite.ResumeLayout(false);
             this.tpBite.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.asciiGridView)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView;
+        private System.Windows.Forms.DataGridView hexaGridView;
         private System.Windows.Forms.TabControl tctrlData;
         private System.Windows.Forms.TabPage tpFile;
         private System.Windows.Forms.TabPage tpBite;
@@ -560,6 +615,9 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label lblBinary;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.DataGridView asciiGridView;
+        private System.Windows.Forms.Label lbl64BitsSigned;
+        private System.Windows.Forms.Label lbl11;
     }
 }
 

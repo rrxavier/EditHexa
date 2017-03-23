@@ -83,7 +83,6 @@
             this.hexaGridView.AllowUserToResizeColumns = false;
             this.hexaGridView.AllowUserToResizeRows = false;
             this.hexaGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.hexaGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.hexaGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
@@ -93,12 +92,14 @@
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.hexaGridView.DefaultCellStyle = dataGridViewCellStyle1;
-            this.hexaGridView.Location = new System.Drawing.Point(275, 33);
-            this.hexaGridView.MinimumSize = new System.Drawing.Size(406, 397);
+            this.hexaGridView.Location = new System.Drawing.Point(274, 33);
+            this.hexaGridView.MinimumSize = new System.Drawing.Size(428, 397);
+            this.hexaGridView.MultiSelect = false;
             this.hexaGridView.Name = "hexaGridView";
             this.hexaGridView.RowHeadersVisible = false;
+            this.hexaGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.hexaGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.hexaGridView.Size = new System.Drawing.Size(406, 397);
+            this.hexaGridView.Size = new System.Drawing.Size(428, 397);
             this.hexaGridView.TabIndex = 3;
             this.hexaGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellClick);
             // 
@@ -539,7 +540,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.asciiGridView.DefaultCellStyle = dataGridViewCellStyle2;
-            this.asciiGridView.Location = new System.Drawing.Point(711, 33);
+            this.asciiGridView.Location = new System.Drawing.Point(722, 33);
             this.asciiGridView.MinimumSize = new System.Drawing.Size(323, 397);
             this.asciiGridView.Name = "asciiGridView";
             this.asciiGridView.Size = new System.Drawing.Size(323, 397);

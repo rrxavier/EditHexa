@@ -19,7 +19,7 @@ namespace editeurHexadecimal {
         }
 
         private void Form1_Load(object sender, EventArgs e) {
-            hexaGridView.MouseWheel += new System.Windows.Forms.MouseEventHandler(askRange);
+            hexaGridView.MouseWheel += new System.Windows.Forms.MouseEventHandler(askRange); /* TO-DO: bug, si on commence par scroller vers le haut, il faut après scroller plus longtemps vers le bas pour que ça réagisse */
             previousSize = new Size(this.Size.Width, this.Size.Height);
         }
 
@@ -69,7 +69,7 @@ namespace editeurHexadecimal {
                 updateGridView(false, 17);
         }
 
-        private void dataGridView_CellClick(object sender, DataGridViewCellEventArgs e) {
+        private void dataGridView_CellClick(object sender, DataGridViewCellEventArgs e) { /*marche pas, analyse un carré dans les 17 affichés, mais pas par rapport à tous */
             DataGridView dtgv = sender as DataGridView;
 
             if (e.ColumnIndex != 0 && e.RowIndex != -1) { /* -1 is header */
@@ -93,19 +93,23 @@ namespace editeurHexadecimal {
             //cell.Style.BackColor = Color.Red; //just to test the click event*/
         }
 
-        private void Form1_SizeChanged(object sender, EventArgs e) {
+        private void Form1_SizeChanged(object sender, EventArgs e) { /*Je ferais sûrement mieux de prendre un autre event */
             Form1 form = sender as Form1;
             int heightDiff = form.Size.Height - previousSize.Height;
             int widthDiff = form.Size.Width - previousSize.Width;
 
-            hexaGridView.Height += heightDiff / 2;
-            hexaGridView.Width += widthDiff / 2;
+            hexaGridView.Height += (heightDiff / 2) + (heightDiff % 2);
+            hexaGridView.Width += (widthDiff / 2) + (widthDiff % 2);
 
             asciiGridView.Height += heightDiff / 2;
             asciiGridView.Width += widthDiff / 2;
 
+            //adapter avec les restes de divisions car bug!
+
             asciiGridView.Location = new Point(asciiGridView.Location.X + (widthDiff / 2), asciiGridView.Location.Y);
             previousSize = new Size(form.Size.Width, form.Size.Height);
+
+            //hexaGridView.AutoResizeRows();
         }
     }
 }

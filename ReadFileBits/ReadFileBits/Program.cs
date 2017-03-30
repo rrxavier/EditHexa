@@ -11,7 +11,7 @@ namespace ReadFileBits
         static void Main(string[] args)
         {
 
-            HexaEditModel _model = new HexaEditModel("C:\\Users\\nunesr_info\\Documents\\GitHub\\EditHexa\\TASKS.txt");
+            HexaEditModel _model = new HexaEditModel("C:\\Users\\durrenmatc_info\\Documents\\GitHub\\EditHexa\\TASKS.txt");
 
             // Hexa tests
             Assert.AreEqual(_model.Hexadecimal[0][1], "5A");
@@ -66,6 +66,20 @@ namespace ReadFileBits
             Assert.AreEqual(_model.ConvertHexaToDouble(new Point(2, 4)), "Données hors limite.");
 
             Console.WriteLine("TESTS COMPLETE WITH NO ERRORS !");
+
+            Assert.AreEqual(_model.Hexadecimal[0][1], "5A");
+            Assert.AreEqual(_model.GetAsciiDataTable().Rows[0].ItemArray[0], "Z");
+            _model.ChangeValueHex(new Point(1, 0), "AA");
+            Assert.AreEqual(_model.Hexadecimal[0][1], "AA");
+            Assert.AreEqual(_model.GetAsciiDataTable().Rows[0].ItemArray[0], "ª");
+            _model.ChangeValueAscii(new Point(1, 0), 'p');
+            Assert.AreEqual(_model.Hexadecimal[0][1], "70");
+            Assert.AreEqual(_model.GetAsciiDataTable().Rows[0].ItemArray[0], "p");
+            _model.UndoChange(new Point(1, 0));
+            Assert.AreEqual(_model.Hexadecimal[0][1], "5A");
+            Assert.AreEqual(_model.GetAsciiDataTable().Rows[0].ItemArray[0], "Z");
+
+            Console.WriteLine("CHANGES COMPLETE WITH NO ERRORS !");
             Console.ReadLine();
         }
     }

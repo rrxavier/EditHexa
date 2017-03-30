@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Data;
-using NUnit.Framework;
 
 namespace ReadFileBits
 {
@@ -17,6 +16,7 @@ namespace ReadFileBits
         string[][] _hexaArray;
         DataTable _myDt;
         DataTable _myAsciiDt;
+        Dictionary<Point, string> _changes;
 
         /// <summary>
         /// Main and only constructor.
@@ -26,6 +26,7 @@ namespace ReadFileBits
         {
             this._filePath = filePath;
             this._byteFile = File.ReadAllBytes(_filePath);
+            this._changes = new Dictionary<Point, string>();
         }
 
         /// <summary>
@@ -398,6 +399,38 @@ namespace ReadFileBits
                 return new Point(1, previousPoint.Y + 1);
             else
                 return new Point(previousPoint.X + 1, previousPoint.Y);
+        }
+
+        public void ChangeValueHex(Point selectedPoint, string newValue)
+        {
+            if (newValue != Hexadecimal[selectedPoint.Y][selectedPoint.X])
+            {
+                if (!_changes.ContainsKey(selectedPoint))
+                    _changes.Add(selectedPoint, Hexadecimal[selectedPoint.Y][selectedPoint.X]);
+                Hexadecimal[selectedPoint.Y][selectedPoint.X] = newValue;
+                _myAsciiDt.Rows[selectedPoint.Y].ItemArray[selectedPoint.X] = Convert.ToChar(Convert.ToUInt32(newValue, 16));
+            }
+        }
+
+        public void ChangeValueAscii(Point selectedPoint, char newValue)
+        {
+            if (newValue.ToString() != _myAsciiDt.Rows[selectedPoint.Y].ItemArray[selectedPoint.X].ToString())
+            {
+                if (!_changes.ContainsKey(selectedPoint))
+                    _changes.Add(selectedPoint, Hexadecimal[selectedPoint.Y][selectedPoint.X]);
+                _myAsciiDt.Rows[selectedPoint.Y].ItemArray[selectedPoint.X] = newValue;
+                Hexadecimal[selectedPoint.Y][selectedPoint.X] = String.Format("{0:X}", Convert.ToInt32(newValue));
+            }
+        }
+
+        public void UndoChange(Point selectedPoint)
+        {
+            if (_changes.ContainsKey(selectedPoint))
+            {
+                Hexadecimal[selectedPoint.Y][selectedPoint.X] = _changes[selectedPoint];
+                _myAsciiDt.Rows[selectedPoint.Y].ItemArray[selectedPoint.X] = Convert.ToChar(Convert.ToUInt32(_changes[selectedPoint], 16));
+                _changes.Remove(selectedPoint);
+            }
         }
     }
 }

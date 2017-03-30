@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Data;
 
-namespace editeurHexadecimal
-{
+namespace editeurHexadecimal {
     class HexaEditModel
     {
         string _filePath;
         byte[] _byteFile;
         string[][] _hexaArray;
         DataTable _myDt;
+        DataTable _myAsciiDt;
 
         /// <summary>
         /// Main and only constructor.
@@ -85,7 +85,7 @@ namespace editeurHexadecimal
         /// Returns the Hexadecimal Array in a datatable.
         /// </summary>
         /// <returns></returns>
-        public DataTable GetDataTable()
+        public DataTable GetHexaDataTable()
         {
             if (_myDt == null)
             {
@@ -120,9 +120,49 @@ namespace editeurHexadecimal
         /// <param name="startingRow">Starting row.</param>
         /// <param name="nbRows">Number of rows to take.</param>
         /// <returns></returns>
-        public DataTable GetDataTable(int startingRow, int nbRows)
+        public DataTable GetHexaDataTable(int startingRow, int nbRows)
         {
-            IEnumerable<DataRow> rows = this.GetDataTable().AsEnumerable().Skip(startingRow - 1).Take(nbRows);
+            IEnumerable<DataRow> rows = this.GetHexaDataTable().AsEnumerable().Skip(startingRow - 1).Take(nbRows);
+            return rows.CopyToDataTable();
+        }
+
+        /// <summary>
+        /// Returns the Hexadecimal Array in a datatable.
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetAsciiDataTable()
+        {
+            if (_myDt == null)
+            {
+                DataTable dt = new DataTable();
+
+                for (int i = 0; i < 16; i++)
+                    dt.Columns.Add(new DataColumn());
+
+                foreach (string[] line in this.Hexadecimal)
+                {
+                    object[] convertedLine = new object[16];
+                    for (int i = 0; i < line.Length; i++)
+                    {
+                        if (line[i] != null && !(line[i].Length > 2))
+                            convertedLine[i - 1] = Convert.ToChar(Convert.ToUInt32(line[i], 16));
+                    }
+                    dt.Rows.Add(convertedLine);
+                }
+                _myAsciiDt = dt;
+            }
+            return _myAsciiDt;
+        }
+
+        /// <summary>
+        /// Returns a page of the Hexadecimal Array.
+        /// </summary>
+        /// <param name="startingRow">Starting row.</param>
+        /// <param name="nbRows">Number of rows to take.</param>
+        /// <returns></returns>
+        public DataTable GetAsciiDataTable(int startingRow, int nbRows)
+        {
+            IEnumerable<DataRow> rows = this.GetAsciiDataTable().AsEnumerable().Skip(startingRow - 1).Take(nbRows);
             return rows.CopyToDataTable();
         }
 
@@ -331,7 +371,7 @@ namespace editeurHexadecimal
             coords6 = GetNewCoords(coords5);
             coords7 = GetNewCoords(coords6);
             coords8 = GetNewCoords(coords7);
-            
+
             if (this.Hexadecimal[coords8.Y][coords8.X] != null && coords8.Y * 16 + coords8.X < ByteFile.Length)
                 return Convert.ToString(BitConverter.ToDouble(BitConverter.GetBytes(Convert.ToInt64(this.Hexadecimal[coords8.Y][coords8.X] +
                     this.Hexadecimal[coords7.Y][coords7.X] +

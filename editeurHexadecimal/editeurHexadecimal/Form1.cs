@@ -60,8 +60,8 @@ namespace editeurHexadecimal {
             else
                 firstWantedRow = hexaGridView.Rows[0].Index + firstRowIndex - 1 - 17;
 
-            hexaGridView.DataSource = model.GetDataTable(firstWantedRow, nbRow);
-            //asciiGridView.DataSource = model.GetAsciiDataTable(firstWanterRow, nbRow);
+            hexaGridView.DataSource = model.GetHexaDataTable(firstWantedRow, nbRow);
+            asciiGridView.DataSource = model.GetAsciiDataTable(firstWantedRow, nbRow);
 
             if (down)
                 firstRowIndex += 17;

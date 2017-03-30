@@ -13,9 +13,11 @@ namespace editeurHexadecimal {
         HexaEditModel model;
         int firstRowIndex;
         Size previousSize;
+        bool firstTime = true;
 
         public Form1() {
             InitializeComponent();
+            firstTime = false;
         }
 
         private void Form1_Load(object sender, EventArgs e) {
@@ -40,6 +42,11 @@ namespace editeurHexadecimal {
                 }
 
                 hexaGridView.Columns[0].MinimumWidth = 55;
+
+                int columnsWidth = (hexaGridView.Width - hexaGridView.Columns[0].Width) / 16;
+                foreach (DataGridViewColumn column in hexaGridView.Columns) {
+                    column.Width = columnsWidth;
+                }
             }
         }
 
@@ -94,34 +101,38 @@ namespace editeurHexadecimal {
         }
 
         private void Form1_SizeChanged(object sender, EventArgs e) { /*Je ferais sûrement mieux de prendre un autre event */
-            Form1 form = sender as Form1;
-            int heightDiff = form.Size.Height - previousSize.Height;
-            int widthDiff = form.Size.Width - previousSize.Width;
+            if (!firstTime) { 
+                Form1 form = sender as Form1;
+                int heightDiff = form.Size.Height - previousSize.Height;
+                int widthDiff = form.Size.Width - previousSize.Width;
 
-            hexaGridView.Height += (heightDiff / 2) + (heightDiff % 2);
-            hexaGridView.Width += (widthDiff / 2) + (widthDiff % 2);
+                hexaGridView.Height += (heightDiff / 2) + (heightDiff % 2);
+                hexaGridView.Width += (widthDiff / 2) + (widthDiff % 2);
 
-            asciiGridView.Height += heightDiff / 2;
-            asciiGridView.Width += widthDiff / 2;
+                asciiGridView.Height += heightDiff / 2;
+                asciiGridView.Width += widthDiff / 2;
 
-            foreach (DataGridViewColumn column in hexaGridView.Columns)
-                column.Width = hexaGridView.Columns[1].Width;
+                //adapter avec les restes de divisions car bug!
 
-            //adapter avec les restes de divisions car bug!
+                asciiGridView.Location = new Point(asciiGridView.Location.X + (widthDiff / 2), asciiGridView.Location.Y);
+                previousSize = new Size(form.Size.Width, form.Size.Height);
 
-            asciiGridView.Location = new Point(asciiGridView.Location.X + (widthDiff / 2), asciiGridView.Location.Y);
-            previousSize = new Size(form.Size.Width, form.Size.Height);
+                //hexaGridView.AutoResizeRows();
 
-            //hexaGridView.AutoResizeRows();
+                DataGridViewCellStyle defaultCellStyle = hexaGridView.DefaultCellStyle;
 
-            DataGridViewCellStyle defaultCellStyle = hexaGridView.DefaultCellStyle;
-
-            if (heightDiff < 0 || widthDiff < 0) {
-                if (defaultCellStyle.Font.Size - 0.25F >= 8.25F) { 
-                    defaultCellStyle.Font = new Font(defaultCellStyle.Font.FontFamily, defaultCellStyle.Font.Size - 0.25F);
+                if (heightDiff < 0 || widthDiff < 0) {
+                    if (defaultCellStyle.Font.Size - 0.25F >= 8.25F) { 
+                        defaultCellStyle.Font = new Font(defaultCellStyle.Font.FontFamily, defaultCellStyle.Font.Size - 0.25F);
+                    }
+                } else { 
+                    defaultCellStyle.Font = new Font(defaultCellStyle.Font.FontFamily, defaultCellStyle.Font.Size + 0.25F);
                 }
-            } else { 
-                defaultCellStyle.Font = new Font(defaultCellStyle.Font.FontFamily, defaultCellStyle.Font.Size + 0.25F);
+
+                double columnsWidth = (hexaGridView.Width - hexaGridView.Columns[0].Width) / 16;
+                foreach (DataGridViewColumn column in hexaGridView.Columns) {
+                    column.Width = (int)columnsWidth;
+                }
             }
         }
     }

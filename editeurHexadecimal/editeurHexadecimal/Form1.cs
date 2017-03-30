@@ -28,7 +28,7 @@ namespace editeurHexadecimal {
                 model = new HexaEditModel(openFileDialog1.FileName);
                 firstRowIndex = 0;
                 updateGridView(true, 17);
-                hexaGridView.Columns[0].Width = 80;
+                hexaGridView.Columns[0].Width = 55;
                 hexaGridView.Columns[0].ReadOnly = true;
                 hexaGridView.Columns[0].DefaultCellStyle.BackColor = Color.Gray;
                 hexaGridView.Columns[0].DefaultCellStyle.SelectionBackColor = Color.Gray;
@@ -39,7 +39,7 @@ namespace editeurHexadecimal {
                     hexaGridView.Columns[i].MinimumWidth = 22;
                 }
 
-                hexaGridView.Columns[0].MinimumWidth = 30;
+                hexaGridView.Columns[0].MinimumWidth = 55;
             }
         }
 
@@ -104,12 +104,25 @@ namespace editeurHexadecimal {
             asciiGridView.Height += heightDiff / 2;
             asciiGridView.Width += widthDiff / 2;
 
+            foreach (DataGridViewColumn column in hexaGridView.Columns)
+                column.Width = hexaGridView.Columns[1].Width;
+
             //adapter avec les restes de divisions car bug!
 
             asciiGridView.Location = new Point(asciiGridView.Location.X + (widthDiff / 2), asciiGridView.Location.Y);
             previousSize = new Size(form.Size.Width, form.Size.Height);
 
             //hexaGridView.AutoResizeRows();
+
+            DataGridViewCellStyle defaultCellStyle = hexaGridView.DefaultCellStyle;
+
+            if (heightDiff < 0 || widthDiff < 0) {
+                if (defaultCellStyle.Font.Size - 0.25F >= 8.25F) { 
+                    defaultCellStyle.Font = new Font(defaultCellStyle.Font.FontFamily, defaultCellStyle.Font.Size - 0.25F);
+                }
+            } else { 
+                defaultCellStyle.Font = new Font(defaultCellStyle.Font.FontFamily, defaultCellStyle.Font.Size + 0.25F);
+            }
         }
     }
 }

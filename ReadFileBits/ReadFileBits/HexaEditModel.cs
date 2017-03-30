@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Data;
+using NUnit.Framework;
 
 namespace ReadFileBits
 {
@@ -152,7 +153,6 @@ namespace ReadFileBits
                 }
                 _myAsciiDt = dt;
             }
-
             return _myAsciiDt;
         }
 
@@ -373,7 +373,7 @@ namespace ReadFileBits
             coords6 = GetNewCoords(coords5);
             coords7 = GetNewCoords(coords6);
             coords8 = GetNewCoords(coords7);
-            
+
             if (this.Hexadecimal[coords8.Y][coords8.X] != null && coords8.Y * 16 + coords8.X < ByteFile.Length)
                 return Convert.ToString(BitConverter.ToDouble(BitConverter.GetBytes(Convert.ToInt64(this.Hexadecimal[coords8.Y][coords8.X] +
                     this.Hexadecimal[coords7.Y][coords7.X] +

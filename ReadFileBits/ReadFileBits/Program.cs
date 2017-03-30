@@ -1,46 +1,71 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
 using System.Drawing;
-using System.Data;
+using NUnit.Framework;
 
 namespace ReadFileBits
 {
+    [TestFixture]
     class Program
     {
+        [Test]
         static void Main(string[] args)
         {
-            /*byte[] test = File.ReadAllBytes("C:\\Users\\nunesr_info\\Documents\\GitHub\\EditHexa\\TASKS.txt");
 
-            foreach (byte item in test)
-            {
-                Console.WriteLine(String.Format("{0:X2}", Convert.ToInt32(item)));
-            }*/
+            HexaEditModel _model = new HexaEditModel("C:\\Users\\nunesr_info\\Documents\\GitHub\\EditHexa\\TASKS.txt");
 
-            HexaEditModel test = new HexaEditModel("C:\\Users\\nunesr_info\\Documents\\GitHub\\EditHexa\\TASKS.txt");
-            string[][] tmp = test.Hexadecimal;
-            DataTable myDataTable = test.GetAsciiDataTable();
+            // Hexa tests
+            Assert.AreEqual(_model.Hexadecimal[0][1], "5A");
+            Assert.AreEqual(_model.Hexadecimal[4][2], "73");
 
-            Console.WriteLine(test.ConvertHexaToBinary(new Point(1, 0)));
-            Console.WriteLine(test.ConvertHexaToOctal(new Point(1, 0)));
-            Console.WriteLine(test.ConvertHexaTo8BitsSigned(new Point(1, 0)));
-            Console.WriteLine(test.ConvertHexaTo8BitsUnsigned(new Point(1, 0)));
-            Console.WriteLine(test.ConvertHexaTo16BitsSigned(new Point(1, 0)));
-            Console.WriteLine(test.ConvertHexaTo16BitsUnsigned(new Point(1, 0)));
-            Console.WriteLine(test.ConvertHexaTo32BitsSigned(new Point(1, 0)));
-            Console.WriteLine(test.ConvertHexaTo32BitsUnsigned(new Point(1, 0)));
-            Console.WriteLine(test.ConvertHexaTo64BitsSigned(new Point(1, 0)));
-            Console.WriteLine(test.ConvertHexaToFloat(new Point(1, 0)));
-            Console.WriteLine(test.ConvertHexaToDouble(new Point(16, 0)));
-            //Console.WriteLine(test.ConvertHexaTo64BitsUnsigned(new Point(0, 1)));
+            // Ascii tests
+            Assert.AreEqual(_model.GetAsciiDataTable().Rows[0].ItemArray[0], "Z");
+            Assert.AreEqual(_model.GetAsciiDataTable().Rows[4].ItemArray[1], "s");
 
-            /*Console.WriteLine(ConvertFromHexa.ConvertHexaToBinary("B7"));
-            Console.WriteLine(test.ConvertHexaTo32BitsSigned(new Point(3, 14)));*/
-            //Console.WriteLine(test.ConvertHexaTo32BitsUnsigned(new Point(4, 0)));
+            // Binary tests
+            Assert.AreEqual(_model.ConvertHexaToBinary(new Point(1, 0)), "1011010");
+            Assert.AreEqual(_model.ConvertHexaToBinary(new Point(2, 4)), "1110011");
 
+            // Octal tests
+            Assert.AreEqual(_model.ConvertHexaToOctal(new Point(1, 0)), "132");
+            Assert.AreEqual(_model.ConvertHexaToOctal(new Point(2, 4)), "163");
+
+            // 8 bits signed tests
+            Assert.AreEqual(_model.ConvertHexaTo8BitsSigned(new Point(1, 0)), "90");
+            Assert.AreEqual(_model.ConvertHexaTo8BitsSigned(new Point(2, 4)), "115");
+
+            // 8 bits unsigned tests
+            Assert.AreEqual(_model.ConvertHexaTo8BitsUnsigned(new Point(1, 0)), "90");
+            Assert.AreEqual(_model.ConvertHexaTo8BitsUnsigned(new Point(2, 4)), "115");
+
+            // 16 bits signed tests
+            Assert.AreEqual(_model.ConvertHexaTo16BitsSigned(new Point(1, 0)), "28506");
+            Assert.AreEqual(_model.ConvertHexaTo16BitsSigned(new Point(2, 4)), "Données hors limite.");
+
+            // 16 bits unsigned tests
+            Assert.AreEqual(_model.ConvertHexaTo16BitsUnsigned(new Point(1, 0)), "28506");
+            Assert.AreEqual(_model.ConvertHexaTo16BitsUnsigned(new Point(2, 4)), "Données hors limite.");
+
+            // 32 bits signed tests
+            Assert.AreEqual(_model.ConvertHexaTo32BitsSigned(new Point(1, 0)), "-1446809766");
+            Assert.AreEqual(_model.ConvertHexaTo32BitsSigned(new Point(2, 4)), "Données hors limite.");
+
+            // 32 bits unsigned tests
+            Assert.AreEqual(_model.ConvertHexaTo32BitsUnsigned(new Point(1, 0)), "2848157530");
+            Assert.AreEqual(_model.ConvertHexaTo32BitsUnsigned(new Point(2, 4)), "Données hors limite.");
+
+            // 64 bits signed tests
+            Assert.AreEqual(_model.ConvertHexaTo64BitsSigned(new Point(1, 0)), "5269275475985002330");
+            Assert.AreEqual(_model.ConvertHexaTo64BitsSigned(new Point(2, 4)), "Données hors limite.");
+
+            // Float tests
+            Assert.AreEqual(_model.ConvertHexaToFloat(new Point(1, 0)), "-8.679056E-14");
+            Assert.AreEqual(_model.ConvertHexaToFloat(new Point(2, 4)), "Données hors limite.");
+
+            // Double tests
+            Assert.AreEqual(_model.ConvertHexaToDouble(new Point(1, 0)), "1.80937775225281E+44");
+            Assert.AreEqual(_model.ConvertHexaToDouble(new Point(2, 4)), "Données hors limite.");
+
+            Console.WriteLine("TESTS COMPLETE WITH NO ERRORS !");
             Console.ReadLine();
         }
     }

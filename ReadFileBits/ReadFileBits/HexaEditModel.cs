@@ -401,6 +401,11 @@ namespace ReadFileBits
                 return new Point(previousPoint.X + 1, previousPoint.Y);
         }
 
+        /// <summary>
+        /// Change the value of a point
+        /// </summary>
+        /// <param name="selectedPoint">Point has changed</param>
+        /// <param name="newValue">The new value (hexadecimal)</param>
         public void ChangeValueHex(Point selectedPoint, string newValue)
         {
             if (newValue != Hexadecimal[selectedPoint.Y][selectedPoint.X])
@@ -412,6 +417,11 @@ namespace ReadFileBits
             }
         }
 
+        /// <summary>
+        /// Change the value of a point
+        /// </summary>
+        /// <param name="selectedPoint">Point has changed</param>
+        /// <param name="newValue">The new value (ascii)</param>
         public void ChangeValueAscii(Point selectedPoint, char newValue)
         {
             if (newValue.ToString() != _myAsciiDt.Rows[selectedPoint.Y].ItemArray[selectedPoint.X].ToString())
@@ -423,6 +433,10 @@ namespace ReadFileBits
             }
         }
 
+        /// <summary>
+        /// Returns to the state before the changes
+        /// </summary>
+        /// <param name="selectedPoint">Point changed</param>
         public void UndoChange(Point selectedPoint)
         {
             if (_changes.ContainsKey(selectedPoint))

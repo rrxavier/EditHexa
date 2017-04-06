@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 using System.Data;
 
-namespace editeurHexadecimal {
+namespace editeurHexadecimal
+{
     class HexaEditModel
     {
         string _filePath;
@@ -132,7 +131,7 @@ namespace editeurHexadecimal {
         /// <returns></returns>
         public DataTable GetAsciiDataTable()
         {
-            if (_myDt == null)
+            if (_myAsciiDt == null)
             {
                 DataTable dt = new DataTable();
 

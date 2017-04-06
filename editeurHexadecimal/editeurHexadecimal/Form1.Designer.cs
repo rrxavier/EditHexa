@@ -91,26 +91,25 @@
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.hexaGridView.DefaultCellStyle = dataGridViewCellStyle1;
-            this.hexaGridView.Location = new System.Drawing.Point(411, 51);
-            this.hexaGridView.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.hexaGridView.Location = new System.Drawing.Point(274, 33);
+            this.hexaGridView.MinimumSize = new System.Drawing.Size(428, 397);
             this.hexaGridView.MultiSelect = false;
             this.hexaGridView.Name = "hexaGridView";
             this.hexaGridView.RowHeadersVisible = false;
             this.hexaGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.hexaGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.hexaGridView.Size = new System.Drawing.Size(642, 611);
+            this.hexaGridView.Size = new System.Drawing.Size(428, 397);
             this.hexaGridView.TabIndex = 3;
-            this.hexaGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellClick);
+            this.hexaGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridView_CellClick);
             // 
             // tctrlData
             // 
             this.tctrlData.Controls.Add(this.tpFile);
             this.tctrlData.Controls.Add(this.tpBite);
-            this.tctrlData.Location = new System.Drawing.Point(21, 17);
-            this.tctrlData.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tctrlData.Location = new System.Drawing.Point(14, 11);
             this.tctrlData.Name = "tctrlData";
             this.tctrlData.SelectedIndex = 0;
-            this.tctrlData.Size = new System.Drawing.Size(363, 645);
+            this.tctrlData.Size = new System.Drawing.Size(242, 419);
             this.tctrlData.TabIndex = 7;
             // 
             // tpFile
@@ -129,11 +128,10 @@
             this.tpFile.Controls.Add(this.label3);
             this.tpFile.Controls.Add(this.lblName);
             this.tpFile.Controls.Add(this.label1);
-            this.tpFile.Location = new System.Drawing.Point(4, 29);
-            this.tpFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tpFile.Location = new System.Drawing.Point(4, 22);
             this.tpFile.Name = "tpFile";
-            this.tpFile.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tpFile.Size = new System.Drawing.Size(355, 612);
+            this.tpFile.Padding = new System.Windows.Forms.Padding(3);
+            this.tpFile.Size = new System.Drawing.Size(234, 393);
             this.tpFile.TabIndex = 0;
             this.tpFile.Text = "Détails Fichier";
             this.tpFile.UseVisualStyleBackColor = true;
@@ -141,140 +139,126 @@
             // lblShortName
             // 
             this.lblShortName.AutoSize = true;
-            this.lblShortName.Location = new System.Drawing.Point(10, 112);
-            this.lblShortName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblShortName.Location = new System.Drawing.Point(7, 73);
             this.lblShortName.Name = "lblShortName";
-            this.lblShortName.Size = new System.Drawing.Size(21, 20);
+            this.lblShortName.Size = new System.Drawing.Size(16, 13);
             this.lblShortName.TabIndex = 13;
             this.lblShortName.Text = "...";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(10, 77);
-            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Location = new System.Drawing.Point(7, 50);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(90, 20);
+            this.label7.Size = new System.Drawing.Size(62, 13);
             this.label7.TabIndex = 12;
             this.label7.Text = "Nom court :";
             // 
             // lblAttribute
             // 
             this.lblAttribute.AutoSize = true;
-            this.lblAttribute.Location = new System.Drawing.Point(15, 500);
-            this.lblAttribute.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblAttribute.Location = new System.Drawing.Point(10, 325);
             this.lblAttribute.Name = "lblAttribute";
-            this.lblAttribute.Size = new System.Drawing.Size(21, 20);
+            this.lblAttribute.Size = new System.Drawing.Size(16, 13);
             this.lblAttribute.TabIndex = 11;
             this.lblAttribute.Text = "...";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(10, 474);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label6.Location = new System.Drawing.Point(7, 308);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(77, 20);
+            this.label6.Size = new System.Drawing.Size(51, 13);
             this.label6.TabIndex = 10;
             this.label6.Text = "Attributs :";
             // 
             // lblModifyOn
             // 
             this.lblModifyOn.AutoSize = true;
-            this.lblModifyOn.Location = new System.Drawing.Point(16, 435);
-            this.lblModifyOn.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblModifyOn.Location = new System.Drawing.Point(11, 283);
             this.lblModifyOn.Name = "lblModifyOn";
-            this.lblModifyOn.Size = new System.Drawing.Size(21, 20);
+            this.lblModifyOn.Size = new System.Drawing.Size(16, 13);
             this.lblModifyOn.TabIndex = 9;
             this.lblModifyOn.Text = "...";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 394);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label5.Location = new System.Drawing.Point(7, 256);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(84, 20);
+            this.label5.Size = new System.Drawing.Size(58, 13);
             this.label5.TabIndex = 8;
             this.label5.Text = "Modifié le :";
             // 
             // lblLastAccess
             // 
             this.lblLastAccess.AutoSize = true;
-            this.lblLastAccess.Location = new System.Drawing.Point(16, 354);
-            this.lblLastAccess.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblLastAccess.Location = new System.Drawing.Point(11, 230);
             this.lblLastAccess.Name = "lblLastAccess";
-            this.lblLastAccess.Size = new System.Drawing.Size(21, 20);
+            this.lblLastAccess.Size = new System.Drawing.Size(16, 13);
             this.lblLastAccess.TabIndex = 7;
             this.lblLastAccess.Text = "...";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 312);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Location = new System.Drawing.Point(7, 203);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(131, 20);
+            this.label4.Size = new System.Drawing.Size(90, 13);
             this.label4.TabIndex = 6;
             this.label4.Text = "Dernier accès le :";
             // 
             // lblCreatedDate
             // 
             this.lblCreatedDate.AutoSize = true;
-            this.lblCreatedDate.Location = new System.Drawing.Point(21, 274);
-            this.lblCreatedDate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblCreatedDate.Location = new System.Drawing.Point(14, 178);
             this.lblCreatedDate.Name = "lblCreatedDate";
-            this.lblCreatedDate.Size = new System.Drawing.Size(21, 20);
+            this.lblCreatedDate.Size = new System.Drawing.Size(16, 13);
             this.lblCreatedDate.TabIndex = 5;
             this.lblCreatedDate.Text = "...";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 228);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(7, 148);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(67, 20);
+            this.label2.Size = new System.Drawing.Size(46, 13);
             this.label2.TabIndex = 4;
             this.label2.Text = "Créé le :";
             // 
             // lblSize
             // 
             this.lblSize.AutoSize = true;
-            this.lblSize.Location = new System.Drawing.Point(16, 185);
-            this.lblSize.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblSize.Location = new System.Drawing.Point(11, 120);
             this.lblSize.Name = "lblSize";
-            this.lblSize.Size = new System.Drawing.Size(21, 20);
+            this.lblSize.Size = new System.Drawing.Size(16, 13);
             this.lblSize.TabIndex = 3;
             this.lblSize.Text = "...";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 151);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(7, 98);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 20);
+            this.label3.Size = new System.Drawing.Size(38, 13);
             this.label3.TabIndex = 2;
             this.label3.Text = "Taille :";
             // 
             // lblName
             // 
             this.lblName.AutoSize = true;
-            this.lblName.Location = new System.Drawing.Point(15, 37);
-            this.lblName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblName.Location = new System.Drawing.Point(10, 24);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(21, 20);
+            this.lblName.Size = new System.Drawing.Size(16, 13);
             this.lblName.TabIndex = 1;
             this.lblName.Text = "...";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 17);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(7, 11);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(50, 20);
+            this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Nom :";
             // 
@@ -304,11 +288,10 @@
             this.tpBite.Controls.Add(this.label9);
             this.tpBite.Controls.Add(this.lblChar);
             this.tpBite.Controls.Add(this.label8);
-            this.tpBite.Location = new System.Drawing.Point(4, 29);
-            this.tpBite.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tpBite.Location = new System.Drawing.Point(4, 22);
             this.tpBite.Name = "tpBite";
-            this.tpBite.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tpBite.Size = new System.Drawing.Size(355, 612);
+            this.tpBite.Padding = new System.Windows.Forms.Padding(3);
+            this.tpBite.Size = new System.Drawing.Size(234, 393);
             this.tpBite.TabIndex = 1;
             this.tpBite.Text = "Détails Octet";
             this.tpBite.UseVisualStyleBackColor = true;
@@ -316,249 +299,224 @@
             // lbl64BitsSigned
             // 
             this.lbl64BitsSigned.AutoSize = true;
-            this.lbl64BitsSigned.Location = new System.Drawing.Point(108, 448);
-            this.lbl64BitsSigned.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbl64BitsSigned.Location = new System.Drawing.Point(72, 291);
             this.lbl64BitsSigned.Name = "lbl64BitsSigned";
-            this.lbl64BitsSigned.Size = new System.Drawing.Size(21, 20);
+            this.lbl64BitsSigned.Size = new System.Drawing.Size(16, 13);
             this.lbl64BitsSigned.TabIndex = 25;
             this.lbl64BitsSigned.Text = "...";
             // 
             // lbl11
             // 
             this.lbl11.AutoSize = true;
-            this.lbl11.Location = new System.Drawing.Point(8, 448);
-            this.lbl11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbl11.Location = new System.Drawing.Point(5, 291);
             this.lbl11.Name = "lbl11";
-            this.lbl11.Size = new System.Drawing.Size(86, 20);
+            this.lbl11.Size = new System.Drawing.Size(58, 13);
             this.lbl11.TabIndex = 24;
             this.lbl11.Text = "64 bits (s) :";
             // 
             // lblDouble
             // 
             this.lblDouble.AutoSize = true;
-            this.lblDouble.Location = new System.Drawing.Point(111, 531);
-            this.lblDouble.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDouble.Location = new System.Drawing.Point(74, 345);
             this.lblDouble.Name = "lblDouble";
-            this.lblDouble.Size = new System.Drawing.Size(21, 20);
+            this.lblDouble.Size = new System.Drawing.Size(16, 13);
             this.lblDouble.TabIndex = 23;
             this.lblDouble.Text = "...";
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(10, 531);
-            this.label15.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label15.Location = new System.Drawing.Point(7, 345);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(68, 20);
+            this.label15.Size = new System.Drawing.Size(47, 13);
             this.label15.TabIndex = 22;
             this.label15.Text = "Double :";
             // 
             // lblFloat
             // 
             this.lblFloat.AutoSize = true;
-            this.lblFloat.Location = new System.Drawing.Point(110, 492);
-            this.lblFloat.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblFloat.Location = new System.Drawing.Point(73, 320);
             this.lblFloat.Name = "lblFloat";
-            this.lblFloat.Size = new System.Drawing.Size(21, 20);
+            this.lblFloat.Size = new System.Drawing.Size(16, 13);
             this.lblFloat.TabIndex = 21;
             this.lblFloat.Text = "...";
             // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(9, 492);
-            this.label18.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label18.Location = new System.Drawing.Point(6, 320);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(53, 20);
+            this.label18.Size = new System.Drawing.Size(36, 13);
             this.label18.TabIndex = 20;
             this.label18.Text = "Float :";
             // 
             // lbl32BitsNS
             // 
             this.lbl32BitsNS.AutoSize = true;
-            this.lbl32BitsNS.Location = new System.Drawing.Point(108, 398);
-            this.lbl32BitsNS.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbl32BitsNS.Location = new System.Drawing.Point(72, 259);
             this.lbl32BitsNS.Name = "lbl32BitsNS";
-            this.lbl32BitsNS.Size = new System.Drawing.Size(21, 20);
+            this.lbl32BitsNS.Size = new System.Drawing.Size(16, 13);
             this.lbl32BitsNS.TabIndex = 19;
             this.lbl32BitsNS.Text = "...";
             // 
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(8, 398);
-            this.label20.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label20.Location = new System.Drawing.Point(5, 259);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(95, 20);
+            this.label20.Size = new System.Drawing.Size(64, 13);
             this.label20.TabIndex = 18;
             this.label20.Text = "32 bits (ns) :";
             // 
             // lbl32BitsSigned
             // 
             this.lbl32BitsSigned.AutoSize = true;
-            this.lbl32BitsSigned.Location = new System.Drawing.Point(108, 346);
-            this.lbl32BitsSigned.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbl32BitsSigned.Location = new System.Drawing.Point(72, 225);
             this.lbl32BitsSigned.Name = "lbl32BitsSigned";
-            this.lbl32BitsSigned.Size = new System.Drawing.Size(21, 20);
+            this.lbl32BitsSigned.Size = new System.Drawing.Size(16, 13);
             this.lbl32BitsSigned.TabIndex = 17;
             this.lbl32BitsSigned.Text = "...";
             // 
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(8, 346);
-            this.label22.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label22.Location = new System.Drawing.Point(5, 225);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(86, 20);
+            this.label22.Size = new System.Drawing.Size(58, 13);
             this.label22.TabIndex = 16;
             this.label22.Text = "32 bits (s) :";
             // 
             // lbl16BitsNS
             // 
             this.lbl16BitsNS.AutoSize = true;
-            this.lbl16BitsNS.Location = new System.Drawing.Point(108, 292);
-            this.lbl16BitsNS.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbl16BitsNS.Location = new System.Drawing.Point(72, 190);
             this.lbl16BitsNS.Name = "lbl16BitsNS";
-            this.lbl16BitsNS.Size = new System.Drawing.Size(21, 20);
+            this.lbl16BitsNS.Size = new System.Drawing.Size(16, 13);
             this.lbl16BitsNS.TabIndex = 15;
             this.lbl16BitsNS.Text = "...";
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(8, 292);
-            this.label16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label16.Location = new System.Drawing.Point(5, 190);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(95, 20);
+            this.label16.Size = new System.Drawing.Size(64, 13);
             this.label16.TabIndex = 14;
             this.label16.Text = "16 bits (ns) :";
             // 
             // lbl16BitSigned
             // 
             this.lbl16BitSigned.AutoSize = true;
-            this.lbl16BitSigned.Location = new System.Drawing.Point(108, 245);
-            this.lbl16BitSigned.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbl16BitSigned.Location = new System.Drawing.Point(72, 159);
             this.lbl16BitSigned.Name = "lbl16BitSigned";
-            this.lbl16BitSigned.Size = new System.Drawing.Size(21, 20);
+            this.lbl16BitSigned.Size = new System.Drawing.Size(16, 13);
             this.lbl16BitSigned.TabIndex = 11;
             this.lbl16BitSigned.Text = "...";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(8, 245);
-            this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label14.Location = new System.Drawing.Point(5, 159);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(86, 20);
+            this.label14.Size = new System.Drawing.Size(58, 13);
             this.label14.TabIndex = 10;
             this.label14.Text = "16 bits (s) :";
             // 
             // lbl8BitsNS
             // 
             this.lbl8BitsNS.AutoSize = true;
-            this.lbl8BitsNS.Location = new System.Drawing.Point(108, 198);
-            this.lbl8BitsNS.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbl8BitsNS.Location = new System.Drawing.Point(72, 129);
             this.lbl8BitsNS.Name = "lbl8BitsNS";
-            this.lbl8BitsNS.Size = new System.Drawing.Size(21, 20);
+            this.lbl8BitsNS.Size = new System.Drawing.Size(16, 13);
             this.lbl8BitsNS.TabIndex = 9;
             this.lbl8BitsNS.Text = "...";
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(8, 198);
-            this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label13.Location = new System.Drawing.Point(5, 129);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(86, 20);
+            this.label13.Size = new System.Drawing.Size(58, 13);
             this.label13.TabIndex = 8;
             this.label13.Text = "8 bits (ns) :";
             // 
             // lbl8BitsSigned
             // 
             this.lbl8BitsSigned.AutoSize = true;
-            this.lbl8BitsSigned.Location = new System.Drawing.Point(108, 145);
-            this.lbl8BitsSigned.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbl8BitsSigned.Location = new System.Drawing.Point(72, 94);
             this.lbl8BitsSigned.Name = "lbl8BitsSigned";
-            this.lbl8BitsSigned.Size = new System.Drawing.Size(21, 20);
+            this.lbl8BitsSigned.Size = new System.Drawing.Size(16, 13);
             this.lbl8BitsSigned.TabIndex = 7;
             this.lbl8BitsSigned.Text = "...";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(8, 145);
-            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label11.Location = new System.Drawing.Point(5, 94);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(77, 20);
+            this.label11.Size = new System.Drawing.Size(52, 13);
             this.label11.TabIndex = 6;
             this.label11.Text = "8 bits (s) :";
             // 
             // lblOctal
             // 
             this.lblOctal.AutoSize = true;
-            this.lblOctal.Location = new System.Drawing.Point(110, 95);
-            this.lblOctal.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblOctal.Location = new System.Drawing.Point(73, 62);
             this.lblOctal.Name = "lblOctal";
-            this.lblOctal.Size = new System.Drawing.Size(21, 20);
+            this.lblOctal.Size = new System.Drawing.Size(16, 13);
             this.lblOctal.TabIndex = 5;
             this.lblOctal.Text = "...";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(9, 95);
-            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label10.Location = new System.Drawing.Point(6, 62);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(54, 20);
+            this.label10.Size = new System.Drawing.Size(38, 13);
             this.label10.TabIndex = 4;
             this.label10.Text = "Octal :";
             // 
             // lblBinary
             // 
             this.lblBinary.AutoSize = true;
-            this.lblBinary.Location = new System.Drawing.Point(110, 54);
-            this.lblBinary.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblBinary.Location = new System.Drawing.Point(73, 35);
             this.lblBinary.Name = "lblBinary";
-            this.lblBinary.Size = new System.Drawing.Size(21, 20);
+            this.lblBinary.Size = new System.Drawing.Size(16, 13);
             this.lblBinary.TabIndex = 3;
             this.lblBinary.Text = "...";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(10, 54);
-            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label9.Location = new System.Drawing.Point(7, 35);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(66, 20);
+            this.label9.Size = new System.Drawing.Size(45, 13);
             this.label9.TabIndex = 2;
             this.label9.Text = "Binaire :";
             // 
             // lblChar
             // 
             this.lblChar.AutoSize = true;
-            this.lblChar.Location = new System.Drawing.Point(110, 11);
-            this.lblChar.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblChar.Location = new System.Drawing.Point(73, 7);
             this.lblChar.Name = "lblChar";
-            this.lblChar.Size = new System.Drawing.Size(21, 20);
+            this.lblChar.Size = new System.Drawing.Size(16, 13);
             this.lblChar.TabIndex = 1;
             this.lblChar.Text = "...";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(10, 11);
-            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label8.Location = new System.Drawing.Point(7, 7);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(87, 20);
+            this.label8.Size = new System.Drawing.Size(59, 13);
             this.label8.TabIndex = 0;
             this.label8.Text = "Caractère :";
             // 
             // btnOpenFile
             // 
-            this.btnOpenFile.Location = new System.Drawing.Point(92, 686);
-            this.btnOpenFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnOpenFile.Location = new System.Drawing.Point(61, 446);
             this.btnOpenFile.Name = "btnOpenFile";
-            this.btnOpenFile.Size = new System.Drawing.Size(183, 35);
+            this.btnOpenFile.Size = new System.Drawing.Size(122, 23);
             this.btnOpenFile.TabIndex = 8;
             this.btnOpenFile.Text = "Ouvrir un fichier";
             this.btnOpenFile.UseVisualStyleBackColor = true;
@@ -571,8 +529,10 @@
             // asciiGridView
             // 
             this.asciiGridView.AllowUserToAddRows = false;
-            this.asciiGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCellsExceptHeader;
+            this.asciiGridView.AllowUserToResizeColumns = false;
+            this.asciiGridView.AllowUserToResizeRows = false;
             this.asciiGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.asciiGridView.ColumnHeadersVisible = false;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -581,25 +541,28 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.asciiGridView.DefaultCellStyle = dataGridViewCellStyle2;
-            this.asciiGridView.Location = new System.Drawing.Point(1083, 51);
-            this.asciiGridView.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.asciiGridView.MinimumSize = new System.Drawing.Size(484, 611);
+            this.asciiGridView.Location = new System.Drawing.Point(722, 52);
+            this.asciiGridView.MinimumSize = new System.Drawing.Size(323, 378);
+            this.asciiGridView.MultiSelect = false;
             this.asciiGridView.Name = "asciiGridView";
-            this.asciiGridView.Size = new System.Drawing.Size(484, 611);
+            this.asciiGridView.RowHeadersVisible = false;
+            this.asciiGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.asciiGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.asciiGridView.Size = new System.Drawing.Size(356, 378);
             this.asciiGridView.TabIndex = 9;
             this.asciiGridView.VirtualMode = true;
+            this.asciiGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridView_CellClick);
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1586, 745);
+            this.ClientSize = new System.Drawing.Size(1201, 507);
             this.Controls.Add(this.asciiGridView);
             this.Controls.Add(this.btnOpenFile);
             this.Controls.Add(this.tctrlData);
             this.Controls.Add(this.hexaGridView);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.MinimumSize = new System.Drawing.Size(1598, 773);
+            this.MinimumSize = new System.Drawing.Size(1071, 516);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);

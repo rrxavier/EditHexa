@@ -21,7 +21,7 @@ namespace editeurHexadecimal {
         }
 
         private void Form1_Load(object sender, EventArgs e) {
-            hexaGridView.MouseWheel += new System.Windows.Forms.MouseEventHandler(askRange); /* TO-DO: bug, si on commence par scroller vers le haut, il faut après scroller plus longtemps vers le bas pour que ça réagisse */
+            this.MouseWheel += new System.Windows.Forms.MouseEventHandler(askRange); /* TO-DO: bug, si on commence par scroller vers le haut, il faut après scroller plus longtemps vers le bas pour que ça réagisse */
             previousSize = new Size(this.Size.Width, this.Size.Height);
         }
 
@@ -30,23 +30,70 @@ namespace editeurHexadecimal {
                 model = new HexaEditModel(openFileDialog1.FileName);
                 firstRowIndex = 0;
                 updateGridView(true, 17);
-                hexaGridView.Columns[0].Width = 55;
+
+                hexaGridView.Columns[0].Width = 55; // TO-DO: Je ne devrais pas définir cela ici 
                 hexaGridView.Columns[0].ReadOnly = true;
                 hexaGridView.Columns[0].DefaultCellStyle.BackColor = Color.Gray;
                 hexaGridView.Columns[0].DefaultCellStyle.SelectionBackColor = Color.Gray;
                 hexaGridView.Columns[0].DefaultCellStyle.SelectionForeColor = SystemColors.ControlText;
 
-                for (int i = 0; i < hexaGridView.Columns.Count; i++) { 
-                    hexaGridView.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
-                    hexaGridView.Columns[i].MinimumWidth = 22;
+                setHexaDimension(true);
+                setAsciiDimension(true);
+            }
+
+            asciiGridView.Rows[0].Cells[0].Selected = false; //It was automatically selected for an unknown reason
+        }
+
+        private void setHexaDimension(bool isInitializing = false) {
+            setHexaColumnsWidth(isInitializing);
+            setHexaRowsHeight();
+        }
+
+        private void setAsciiDimension(bool isInitializing = false) {
+            setAsciiColumnsWidth(isInitializing);
+            setAsciiRowsHeight();
+        }
+
+        private void setHexaColumnsWidth(bool isInitializing = false) {
+            int columnsWidth = (hexaGridView.Width - hexaGridView.Columns[0].Width) / 16;
+
+            foreach (DataGridViewColumn column in hexaGridView.Columns) {
+                if (isInitializing) { 
+                    column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                    column.MinimumWidth = 22;
                 }
 
+                column.Width = columnsWidth;
+            }
+
+            if(isInitializing)
                 hexaGridView.Columns[0].MinimumWidth = 55;
+        }
 
-                int columnsWidth = (hexaGridView.Width - hexaGridView.Columns[0].Width) / 16;
-                foreach (DataGridViewColumn column in hexaGridView.Columns) {
-                    column.Width = columnsWidth;
+        private void setHexaRowsHeight() {
+            int rowHeight = (hexaGridView.Height - hexaGridView.ColumnHeadersHeight) / 17;
+
+            foreach (DataGridViewRow row in hexaGridView.Rows) 
+                row.Height = rowHeight;
+        }
+
+        private void setAsciiRowsHeight() {
+            int rowHeight = asciiGridView.Height / 17;
+
+            foreach (DataGridViewRow row in asciiGridView.Rows)
+                row.Height = rowHeight;
+        }
+
+        private void setAsciiColumnsWidth(bool isInitializing = false) {
+            int columnsWidth = columnsWidth = asciiGridView.Width / 16;
+
+            foreach (DataGridViewColumn column in asciiGridView.Columns) {
+                if (isInitializing) {
+                    column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                    column.MinimumWidth = 22;
                 }
+
+                column.Width = columnsWidth;
             }
         }
 
@@ -62,6 +109,7 @@ namespace editeurHexadecimal {
 
             hexaGridView.DataSource = model.GetHexaDataTable(firstWantedRow, nbRow);
             asciiGridView.DataSource = model.GetAsciiDataTable(firstWantedRow, nbRow);
+            asciiGridView.Rows[0].Cells[0].Selected = false; //It was automatically selected for an unknown reason
 
             if (down)
                 firstRowIndex += 17;
@@ -70,37 +118,42 @@ namespace editeurHexadecimal {
         }
 
         private void askRange(object sender, MouseEventArgs e) {
-            if (e.Delta < 0)
+            if (e.Delta < 0) //scroll down
                 updateGridView(true, 17);
-            else
+            else if(firstRowIndex - 17 > 0)
                 updateGridView(false, 17);
         }
 
-        private void dataGridView_CellClick(object sender, DataGridViewCellEventArgs e) { /*marche pas, analyse un carré dans les 17 affichés, mais pas par rapport à tous */
-            DataGridView dtgv = sender as DataGridView;
-
-            if (e.ColumnIndex != 0 && e.RowIndex != -1) { /* -1 is header */
-                Point cellPt = new Point(e.ColumnIndex, e.RowIndex);
-
-                lblBinary.Text = model.ConvertHexaToBinary(cellPt);
-                lblOctal.Text = model.ConvertHexaToOctal(cellPt);
-                lbl8BitsSigned.Text = model.ConvertHexaTo8BitsSigned(cellPt);
-                lbl8BitsNS.Text = model.ConvertHexaTo8BitsUnsigned(cellPt);
-                lbl16BitSigned.Text = model.ConvertHexaTo16BitsSigned(cellPt);
-                lbl16BitsNS.Text = model.ConvertHexaTo16BitsUnsigned(cellPt);
-                lbl32BitsSigned.Text = model.ConvertHexaTo32BitsSigned(cellPt);
-                lbl32BitsNS.Text = model.ConvertHexaTo32BitsUnsigned(cellPt);
-                lbl64BitsSigned.Text = model.ConvertHexaTo64BitsSigned(cellPt);
-                lblFloat.Text = model.ConvertHexaToFloat(cellPt);
-                lblDouble.Text = model.ConvertHexaToDouble(cellPt);
-
-                tctrlData.SelectedIndex = 1;
-            } 
-            //DataGridViewCell cell = dtgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
-            //cell.Style.BackColor = Color.Red; //just to test the click event*/
+        private void gridView_CellClick(object sender, DataGridViewCellEventArgs e) {
+            if (((DataGridView)sender).Name == "hexaGridView") {
+                if (e.ColumnIndex != 0 && e.RowIndex != -1) { //column 0 and row -1 are offset 
+                    updateLabel(new Point(e.ColumnIndex, e.RowIndex + firstRowIndex));
+                    asciiGridView.Rows[e.RowIndex].Cells[e.ColumnIndex - 1].Selected = true;
+                }
+            } else if (((DataGridView)sender).Name == "asciiGridView") {
+                updateLabel(new Point(e.ColumnIndex + 1, e.RowIndex + firstRowIndex));
+                hexaGridView.Rows[e.RowIndex].Cells[e.ColumnIndex + 1].Selected = true;
+            }
         }
 
-        private void Form1_SizeChanged(object sender, EventArgs e) { /*Je ferais sûrement mieux de prendre un autre event */
+        private void updateLabel(Point cellPt){
+            //lblChar.Text = leur demander
+            lblBinary.Text = model.ConvertHexaToBinary(cellPt);
+            lblOctal.Text = model.ConvertHexaToOctal(cellPt);
+            lbl8BitsSigned.Text = model.ConvertHexaTo8BitsSigned(cellPt);
+            lbl8BitsNS.Text = model.ConvertHexaTo8BitsUnsigned(cellPt);
+            lbl16BitSigned.Text = model.ConvertHexaTo16BitsSigned(cellPt);
+            lbl16BitsNS.Text = model.ConvertHexaTo16BitsUnsigned(cellPt);
+            lbl32BitsSigned.Text = model.ConvertHexaTo32BitsSigned(cellPt);
+            lbl32BitsNS.Text = model.ConvertHexaTo32BitsUnsigned(cellPt);
+            lbl64BitsSigned.Text = model.ConvertHexaTo64BitsSigned(cellPt);
+            lblFloat.Text = model.ConvertHexaToFloat(cellPt);
+            lblDouble.Text = model.ConvertHexaToDouble(cellPt);
+
+            tctrlData.SelectedIndex = 1;
+        }
+
+        private void Form1_SizeChanged(object sender, EventArgs e) {
             if (!firstTime) { 
                 Form1 form = sender as Form1;
                 int heightDiff = form.Size.Height - previousSize.Height;
@@ -114,25 +167,33 @@ namespace editeurHexadecimal {
 
                 //adapter avec les restes de divisions car bug!
 
-                asciiGridView.Location = new Point(asciiGridView.Location.X + (widthDiff / 2), asciiGridView.Location.Y);
+                //always 20px after hexaGridView
+                asciiGridView.Location = new Point(hexaGridView.Location.X + hexaGridView.Width + 20, asciiGridView.Location.Y);
+
                 previousSize = new Size(form.Size.Width, form.Size.Height);
 
-                //hexaGridView.AutoResizeRows();
-
-                DataGridViewCellStyle defaultCellStyle = hexaGridView.DefaultCellStyle;
+                DataGridViewCellStyle hexaDefaultCellStyle = hexaGridView.DefaultCellStyle;
+                DataGridViewCellStyle asciiDefaultCellStyle = asciiGridView.DefaultCellStyle;
 
                 if (heightDiff < 0 || widthDiff < 0) {
-                    if (defaultCellStyle.Font.Size - 0.25F >= 8.25F) { 
-                        defaultCellStyle.Font = new Font(defaultCellStyle.Font.FontFamily, defaultCellStyle.Font.Size - 0.25F);
+                    if (hexaDefaultCellStyle.Font.Size - 0.25F >= 8.25F) { 
+                        hexaDefaultCellStyle.Font = new Font(hexaDefaultCellStyle.Font.FontFamily, hexaDefaultCellStyle.Font.Size - 0.25F);
+                        asciiDefaultCellStyle.Font = new Font(hexaDefaultCellStyle.Font.FontFamily, hexaDefaultCellStyle.Font.Size - 0.25F);
                     }
-                } else { 
-                    defaultCellStyle.Font = new Font(defaultCellStyle.Font.FontFamily, defaultCellStyle.Font.Size + 0.25F);
+                } else {
+                    if (hexaDefaultCellStyle.Font.Size + 0.25F <= 12F) {
+                        hexaDefaultCellStyle.Font = new Font(hexaDefaultCellStyle.Font.FontFamily, hexaDefaultCellStyle.Font.Size + 0.25F);
+                        asciiDefaultCellStyle.Font = new Font(hexaDefaultCellStyle.Font.FontFamily, hexaDefaultCellStyle.Font.Size + 0.25F);
+                    }
                 }
 
-                double columnsWidth = (hexaGridView.Width - hexaGridView.Columns[0].Width) / 16;
-                foreach (DataGridViewColumn column in hexaGridView.Columns) {
-                    column.Width = (int)columnsWidth;
-                }
+                setHexaDimension();
+                setAsciiDimension();
+
+
+                //rajouter à l'offset l'espace entre la dernière colonne et la fin, ou régler divisions entiier/double
+
+                //hexaGridView.Columns[0].Width++;
             }
         }
     }

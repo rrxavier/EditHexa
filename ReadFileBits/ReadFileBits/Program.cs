@@ -69,15 +69,19 @@ namespace ReadFileBits
 
             Assert.AreEqual(_model.Hexadecimal[0][1], "5A");
             Assert.AreEqual(_model.GetAsciiDataTable().Rows[0].ItemArray[0], "Z");
+            Assert.AreEqual(_model.ByteFile[0], Convert.ToByte('Z'));
             _model.ChangeValueHex(new Point(1, 0), "AA");
             Assert.AreEqual(_model.Hexadecimal[0][1], "AA");
             Assert.AreEqual(_model.GetAsciiDataTable().Rows[0].ItemArray[0], "ª");
+            Assert.AreEqual(_model.ByteFile[0], Convert.ToByte('ª'));
             _model.ChangeValueAscii(new Point(1, 0), 'p');
             Assert.AreEqual(_model.Hexadecimal[0][1], "70");
             Assert.AreEqual(_model.GetAsciiDataTable().Rows[0].ItemArray[0], "p");
+            Assert.AreEqual(_model.ByteFile[0], Convert.ToByte('p'));
             _model.UndoChange(new Point(1, 0));
             Assert.AreEqual(_model.Hexadecimal[0][1], "5A");
             Assert.AreEqual(_model.GetAsciiDataTable().Rows[0].ItemArray[0], "Z");
+            Assert.AreEqual(_model.ByteFile[0], Convert.ToByte('Z'));
 
             Console.WriteLine("CHANGES COMPLETE WITH NO ERRORS !");
             Console.ReadLine();

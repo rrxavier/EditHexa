@@ -135,7 +135,7 @@ namespace ReadFileBits
         /// <returns></returns>
         public DataTable GetAsciiDataTable()
         {
-            if (_myDt == null)
+            if (_myAsciiDt == null)
             {
                 DataTable dt = new DataTable();
 
@@ -408,13 +408,15 @@ namespace ReadFileBits
         /// <param name="newValue">The new value (hexadecimal)</param>
         public void ChangeValueHex(Point selectedPoint, string newValue)
         {
-            if (newValue != Hexadecimal[selectedPoint.Y][selectedPoint.X])
-            {
-                if (!_changes.ContainsKey(selectedPoint))
-                    _changes.Add(selectedPoint, Hexadecimal[selectedPoint.Y][selectedPoint.X]);
-                Hexadecimal[selectedPoint.Y][selectedPoint.X] = newValue;
-                _myAsciiDt.Rows[selectedPoint.Y].ItemArray[selectedPoint.X] = Convert.ToChar(Convert.ToUInt32(newValue, 16));
-            }
+            if (selectedPoint.X >= 1) //Offset
+                if (newValue != Hexadecimal[selectedPoint.Y][selectedPoint.X])
+                {
+                    if (!_changes.ContainsKey(selectedPoint))
+                        _changes.Add(selectedPoint, Hexadecimal[selectedPoint.Y][selectedPoint.X]);
+                    Hexadecimal[selectedPoint.Y][selectedPoint.X] = newValue; //Pas de "-1" car il contient l'offset
+                    _myAsciiDt.Rows[selectedPoint.Y][selectedPoint.X - 1] = Convert.ToChar(Convert.ToUInt32(newValue, 16));
+                    _byteFile[selectedPoint.Y * 16 + selectedPoint.X - 1] = Convert.ToByte(Convert.ToChar(Convert.ToUInt32(newValue, 16)));
+                }
         }
 
         /// <summary>
@@ -424,13 +426,15 @@ namespace ReadFileBits
         /// <param name="newValue">The new value (ascii)</param>
         public void ChangeValueAscii(Point selectedPoint, char newValue)
         {
-            if (newValue.ToString() != _myAsciiDt.Rows[selectedPoint.Y].ItemArray[selectedPoint.X].ToString())
-            {
-                if (!_changes.ContainsKey(selectedPoint))
-                    _changes.Add(selectedPoint, Hexadecimal[selectedPoint.Y][selectedPoint.X]);
-                _myAsciiDt.Rows[selectedPoint.Y].ItemArray[selectedPoint.X] = newValue;
-                Hexadecimal[selectedPoint.Y][selectedPoint.X] = String.Format("{0:X}", Convert.ToInt32(newValue));
-            }
+            if (selectedPoint.X >= 1) //Offset
+                if (newValue.ToString() != _myAsciiDt.Rows[selectedPoint.Y].ItemArray[selectedPoint.X].ToString())
+                {
+                    if (!_changes.ContainsKey(selectedPoint))
+                        _changes.Add(selectedPoint, Hexadecimal[selectedPoint.Y][selectedPoint.X]);
+                    _myAsciiDt.Rows[selectedPoint.Y][selectedPoint.X - 1] = newValue;
+                    Hexadecimal[selectedPoint.Y][selectedPoint.X] = String.Format("{0:X}", Convert.ToInt32(newValue)); //Pas de "-1" car il contient l'offset
+                    _byteFile[selectedPoint.Y * 16 + selectedPoint.X - 1] = Convert.ToByte(newValue);
+                }
         }
 
         /// <summary>
@@ -439,12 +443,14 @@ namespace ReadFileBits
         /// <param name="selectedPoint">Point changed</param>
         public void UndoChange(Point selectedPoint)
         {
-            if (_changes.ContainsKey(selectedPoint))
-            {
-                Hexadecimal[selectedPoint.Y][selectedPoint.X] = _changes[selectedPoint];
-                _myAsciiDt.Rows[selectedPoint.Y].ItemArray[selectedPoint.X] = Convert.ToChar(Convert.ToUInt32(_changes[selectedPoint], 16));
-                _changes.Remove(selectedPoint);
-            }
+            if (selectedPoint.X >= 1) //Offset
+                if (_changes.ContainsKey(selectedPoint))
+                {
+                    Hexadecimal[selectedPoint.Y][selectedPoint.X] = _changes[selectedPoint]; //Pas de "-1" car il contient l'offset
+                    _myAsciiDt.Rows[selectedPoint.Y][selectedPoint.X - 1] = Convert.ToChar(Convert.ToUInt32(_changes[selectedPoint], 16));
+                    _byteFile[selectedPoint.Y * 16 + selectedPoint.X - 1] = Convert.ToByte(Convert.ToChar(Convert.ToUInt32(_changes[selectedPoint], 16)));
+                    _changes.Remove(selectedPoint);
+                }
         }
     }
 }

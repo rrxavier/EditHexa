@@ -414,6 +414,7 @@ namespace ReadFileBits
                     if (!_changes.ContainsKey(selectedPoint))
                         _changes.Add(selectedPoint, Hexadecimal[selectedPoint.Y][selectedPoint.X]);
                     Hexadecimal[selectedPoint.Y][selectedPoint.X] = newValue; //Pas de "-1" car il contient l'offset
+                    _myDt.Rows[selectedPoint.Y][selectedPoint.X] = newValue; //Pas de "-1" car il contient l'offset
                     _myAsciiDt.Rows[selectedPoint.Y][selectedPoint.X - 1] = Convert.ToChar(Convert.ToUInt32(newValue, 16));
                     _byteFile[selectedPoint.Y * 16 + selectedPoint.X - 1] = Convert.ToByte(Convert.ToChar(Convert.ToUInt32(newValue, 16)));
                 }
@@ -433,6 +434,7 @@ namespace ReadFileBits
                         _changes.Add(selectedPoint, Hexadecimal[selectedPoint.Y][selectedPoint.X]);
                     _myAsciiDt.Rows[selectedPoint.Y][selectedPoint.X - 1] = newValue;
                     Hexadecimal[selectedPoint.Y][selectedPoint.X] = String.Format("{0:X}", Convert.ToInt32(newValue)); //Pas de "-1" car il contient l'offset
+                    _myDt.Rows[selectedPoint.Y][selectedPoint.X] = String.Format("{0:X}", Convert.ToInt32(newValue)); //Pas de "-1" car il contient l'offset
                     _byteFile[selectedPoint.Y * 16 + selectedPoint.X - 1] = Convert.ToByte(newValue);
                 }
         }
@@ -447,6 +449,7 @@ namespace ReadFileBits
                 if (_changes.ContainsKey(selectedPoint))
                 {
                     Hexadecimal[selectedPoint.Y][selectedPoint.X] = _changes[selectedPoint]; //Pas de "-1" car il contient l'offset
+                    _myDt.Rows[selectedPoint.Y][selectedPoint.X] = _changes[selectedPoint]; //Pas de "-1" car il contient l'offset
                     _myAsciiDt.Rows[selectedPoint.Y][selectedPoint.X - 1] = Convert.ToChar(Convert.ToUInt32(_changes[selectedPoint], 16));
                     _byteFile[selectedPoint.Y * 16 + selectedPoint.X - 1] = Convert.ToByte(Convert.ToChar(Convert.ToUInt32(_changes[selectedPoint], 16)));
                     _changes.Remove(selectedPoint);

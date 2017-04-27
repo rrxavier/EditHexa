@@ -10,7 +10,6 @@ namespace ReadFileBits
         [Test]
         static void Main(string[] args)
         {
-
             HexaEditModel _model = new HexaEditModel("C:\\Users\\durrenmatc_info\\Documents\\GitHub\\EditHexa\\TASKS.txt");
 
             // Hexa tests
@@ -68,18 +67,22 @@ namespace ReadFileBits
             Console.WriteLine("TESTS COMPLETE WITH NO ERRORS !");
 
             Assert.AreEqual(_model.Hexadecimal[0][1], "5A");
+            Assert.AreEqual(_model.GetHexaDataTable().Rows[0].ItemArray[1], "5A");
             Assert.AreEqual(_model.GetAsciiDataTable().Rows[0].ItemArray[0], "Z");
             Assert.AreEqual(_model.ByteFile[0], Convert.ToByte('Z'));
             _model.ChangeValueHex(new Point(1, 0), "AA");
             Assert.AreEqual(_model.Hexadecimal[0][1], "AA");
+            Assert.AreEqual(_model.GetHexaDataTable().Rows[0].ItemArray[1], "AA");
             Assert.AreEqual(_model.GetAsciiDataTable().Rows[0].ItemArray[0], "ª");
             Assert.AreEqual(_model.ByteFile[0], Convert.ToByte('ª'));
             _model.ChangeValueAscii(new Point(1, 0), 'p');
             Assert.AreEqual(_model.Hexadecimal[0][1], "70");
+            Assert.AreEqual(_model.GetHexaDataTable().Rows[0].ItemArray[1], "70");
             Assert.AreEqual(_model.GetAsciiDataTable().Rows[0].ItemArray[0], "p");
             Assert.AreEqual(_model.ByteFile[0], Convert.ToByte('p'));
             _model.UndoChange(new Point(1, 0));
             Assert.AreEqual(_model.Hexadecimal[0][1], "5A");
+            Assert.AreEqual(_model.GetHexaDataTable().Rows[0].ItemArray[1], "5A");
             Assert.AreEqual(_model.GetAsciiDataTable().Rows[0].ItemArray[0], "Z");
             Assert.AreEqual(_model.ByteFile[0], Convert.ToByte('Z'));
 

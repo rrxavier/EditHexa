@@ -442,10 +442,10 @@ namespace ReadFileBits
                 {
                     if (!_changes.ContainsKey(selectedPoint))
                         _changes.Add(selectedPoint, Hexadecimal[selectedPoint.Y][selectedPoint.X]);
-                    _myAsciiDt.Rows[selectedPoint.Y][selectedPoint.X - 1] = newValue;
-                    Hexadecimal[selectedPoint.Y][selectedPoint.X] = String.Format("{0:X}", Convert.ToInt32(newValue)); //Pas de "-1" car il contient l'offset
-                    _myDt.Rows[selectedPoint.Y][selectedPoint.X] = String.Format("{0:X}", Convert.ToInt32(newValue)); //Pas de "-1" car il contient l'offset
-                    _byteFile[selectedPoint.Y * 16 + selectedPoint.X - 1] = Convert.ToByte(newValue);
+                    _myAsciiDt.Rows[selectedPoint.Y][selectedPoint.X] = newValue;
+                    Hexadecimal[selectedPoint.Y][selectedPoint.X + 1] = String.Format("{0:X}", Convert.ToInt32(newValue)); //Pas de "-1" car il contient l'offset
+                    _myDt.Rows[selectedPoint.Y][selectedPoint.X + 1] = String.Format("{0:X}", Convert.ToInt32(newValue)); //Pas de "-1" car il contient l'offset
+                    _byteFile[selectedPoint.Y * 16 + selectedPoint.X] = Convert.ToByte(newValue);
                 }
         }
 
@@ -569,21 +569,13 @@ namespace ReadFileBits
                 {
                     temp = item.Trim();
                     if (temp == "NotContentIndexed")
-                    {
                         returnValue += "NCI ";
-                    }
                     else if (temp == "SparseFile")
-                    {
                         returnValue += "SF ";
-                    }
                     else if (temp == "ReparsePoint")
-                    {
                         returnValue += "RP ";
-                    }
                     else
-                    {
                         returnValue += temp[0] + " ";
-                    }
                 }
                 return returnValue;
             }

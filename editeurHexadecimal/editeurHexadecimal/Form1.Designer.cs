@@ -1,5 +1,5 @@
 ﻿namespace editeurHexadecimal {
-    partial class Form1 {
+    partial class frmMain {
         /// <summary>
         /// Variable nécessaire au concepteur.
         /// </summary>
@@ -562,7 +562,7 @@
             this.asciiGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridView_CellClick);
             this.asciiGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellEndEdit);
             // 
-            // Form1
+            // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -572,8 +572,8 @@
             this.Controls.Add(this.tctrlData);
             this.Controls.Add(this.hexaGridView);
             this.MinimumSize = new System.Drawing.Size(1071, 516);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "frmMain";
+            this.Text = "Editeur Hexadécimal";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.hexaGridView)).EndInit();

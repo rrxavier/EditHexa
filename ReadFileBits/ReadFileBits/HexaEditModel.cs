@@ -483,6 +483,9 @@ namespace ReadFileBits
 
             #region Properties
 
+            /// <summary>
+            /// File name without
+            /// </summary>
             public string Name
             {
                 get
@@ -491,6 +494,9 @@ namespace ReadFileBits
                 }
             }
 
+            /// <summary>
+            /// File's creation date.
+            /// </summary>
             public DateTime CreationTime
             {
                 get
@@ -499,6 +505,9 @@ namespace ReadFileBits
                 }
             }
 
+            /// <summary>
+            /// Last time the file has been modified.
+            /// </summary>
             public DateTime LastWriteTime
             {
                 get
@@ -507,6 +516,9 @@ namespace ReadFileBits
                 }
             }
 
+            /// <summary>
+            /// Last time the fils has been accessed.
+            /// </summary>
             public DateTime LastAccessTime
             {
                 get
@@ -515,6 +527,9 @@ namespace ReadFileBits
                 }
             }
 
+            /// <summary>
+            /// File attributes.
+            /// </summary>
             public string Attributs
             {
                 get
@@ -523,6 +538,9 @@ namespace ReadFileBits
                 }
             }
 
+            /// <summary>
+            /// File size. 
+            /// </summary>
             public long FileSize
             {
                 get
@@ -531,6 +549,9 @@ namespace ReadFileBits
                 }
             }
 
+            /// <summary>
+            /// File name in DOS.
+            /// </summary>
             public string ShortName
             {
                 get { return _shortName; }
@@ -540,9 +561,13 @@ namespace ReadFileBits
 
             #region Methods
 
-            public FileData(string filename)
+            /// <summary>
+            /// Constructeur de l'object.
+            /// </summary>
+            /// <param name="filePath">Chemin d'accès au fichier.</param>
+            public FileData(string filePath)
             {
-                _fileInfo = new FileInfo(filename);
+                _fileInfo = new FileInfo(filePath);
                 _name = _fileInfo.Name;
                 int tmpHoursToAdd = TimeZoneInfo.Local.BaseUtcOffset.Hours;
                 _creationTime = _fileInfo.CreationTimeUtc.AddHours(tmpHoursToAdd);
@@ -553,6 +578,11 @@ namespace ReadFileBits
                 _shortName = ConvertToDOSFileName(this._name).ToUpper();
             }
 
+            /// <summary>
+            /// Racourcis le nom du fichier s'il est trop court.
+            /// </summary>
+            /// <param name="myStr"></param>
+            /// <returns></returns>
             private static string ConvertToDOSFileName(string myStr)
             {
                 string[] tempStr = myStr.Split('.');
@@ -561,6 +591,11 @@ namespace ReadFileBits
                 return myStr;
             }
 
+            /// <summary>
+            /// Récupère les lettres correspondants à l'attribut du fichier.
+            /// </summary>
+            /// <param name="listAttributs"></param>
+            /// <returns>Les lettres correspondants à l'attribut du fichier.</returns>
             private static string GetLetterOfAttributs(string[] listAttributs)
             {
                 string returnValue = "";

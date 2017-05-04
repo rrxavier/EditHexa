@@ -41,6 +41,14 @@ namespace editeurHexadecimal {
 
                 setHexaDimension(true);
                 setAsciiDimension(true);
+
+                lblAttribute.Text = model.MyFileData.Attributs;
+                lblCreatedDate.Text = model.MyFileData.CreationTime.ToString();
+                lblLastAccess.Text = model.MyFileData.LastAccessTime.ToString();
+                lblModifyOn.Text = model.MyFileData.LastWriteTime.ToString();
+                lblName.Text = model.MyFileData.Name;
+                lblShortName.Text = model.MyFileData.ShortName;
+                lblSize.Text = model.MyFileData.FileSize.ToString();
             }
 
             asciiGridView.Rows[0].Cells[0].Selected = false; //It was automatically selected for an unknown reason
@@ -130,17 +138,23 @@ namespace editeurHexadecimal {
         private void gridView_CellClick(object sender, DataGridViewCellEventArgs e) {
             if (((DataGridView)sender).Name == "hexaGridView") {
                 if (e.ColumnIndex != 0 && e.RowIndex != -1) { //column 0 and row -1 are offset 
-                    updateLabel(new Point(e.ColumnIndex, e.RowIndex + firstRowIndex));
+                    updateLabel(new Point(e.ColumnIndex, e.RowIndex + firstRowIndex), false);
                     asciiGridView.Rows[e.RowIndex].Cells[e.ColumnIndex - 1].Selected = true;
                 }
             } else if (((DataGridView)sender).Name == "asciiGridView") {
-                updateLabel(new Point(e.ColumnIndex + 1, e.RowIndex + firstRowIndex));
+                updateLabel(new Point(e.ColumnIndex + 1, e.RowIndex + firstRowIndex), true);
                 hexaGridView.Rows[e.RowIndex].Cells[e.ColumnIndex + 1].Selected = true;
             }
         }
 
-        private void updateLabel(Point cellPt){
-            //lblChar.Text = leur demander
+        private void updateLabel(Point cellPt, bool asciiTable){
+            //lblChar.Text = asciiGridView.Rows[cellPt.Y].Cells[cellPt.X].Value.ToString();
+
+            if(asciiTable)
+                lblChar.Text = model.GetAsciiDataTable().Rows[cellPt.Y][cellPt.X].ToString();
+            else
+                lblChar.Text = model.GetAsciiDataTable().Rows[cellPt.Y][cellPt.X - 1].ToString();
+
             lblBinary.Text = model.ConvertHexaToBinary(cellPt);
             lblOctal.Text = model.ConvertHexaToOctal(cellPt);
             lbl8BitsSigned.Text = model.ConvertHexaTo8BitsSigned(cellPt);

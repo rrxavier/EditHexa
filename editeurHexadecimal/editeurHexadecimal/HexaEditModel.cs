@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Drawing;
 using System.Data;
 
@@ -14,6 +16,7 @@ namespace editeurHexadecimal
         string[][] _hexaArray;
         DataTable _myDt;
         DataTable _myAsciiDt;
+        Dictionary<Point, string> _changes;
 
         /// <summary>
         /// Main and only constructor.
@@ -23,6 +26,7 @@ namespace editeurHexadecimal
         {
             this._filePath = filePath;
             this._byteFile = File.ReadAllBytes(_filePath);
+            this._changes = new Dictionary<Point, string>();
         }
 
         /// <summary>
@@ -121,7 +125,7 @@ namespace editeurHexadecimal
         /// <returns></returns>
         public DataTable GetHexaDataTable(int startingRow, int nbRows)
         {
-            IEnumerable<DataRow> rows = this.GetHexaDataTable().AsEnumerable().Skip(startingRow - 1).Take(nbRows);
+            IEnumerable<DataRow> rows = this.GetHexaDataTable().AsEnumerable().Skip(startingRow).Take(nbRows);
             return rows.CopyToDataTable();
         }
 
@@ -161,7 +165,7 @@ namespace editeurHexadecimal
         /// <returns></returns>
         public DataTable GetAsciiDataTable(int startingRow, int nbRows)
         {
-            IEnumerable<DataRow> rows = this.GetAsciiDataTable().AsEnumerable().Skip(startingRow - 1).Take(nbRows);
+            IEnumerable<DataRow> rows = this.GetAsciiDataTable().AsEnumerable().Skip(startingRow).Take(nbRows);
             return rows.CopyToDataTable();
         }
 
@@ -395,6 +399,61 @@ namespace editeurHexadecimal
                 return new Point(1, previousPoint.Y + 1);
             else
                 return new Point(previousPoint.X + 1, previousPoint.Y);
+        }
+
+        /// <summary>
+        /// Change the value of a point
+        /// </summary>
+        /// <param name="selectedPoint">Point has changed</param>
+        /// <param name="newValue">The new value (hexadecimal)</param>
+        public void ChangeValueHex(Point selectedPoint, string newValue)
+        {
+            if (selectedPoint.X >= 1) //Offset
+                if (newValue != Hexadecimal[selectedPoint.Y][selectedPoint.X])
+                {
+                    if (!_changes.ContainsKey(selectedPoint))
+                        _changes.Add(selectedPoint, Hexadecimal[selectedPoint.Y][selectedPoint.X]);
+                    Hexadecimal[selectedPoint.Y][selectedPoint.X] = newValue; //Pas de "-1" car il contient l'offset
+                    _myDt.Rows[selectedPoint.Y][selectedPoint.X] = newValue; //Pas de "-1" car il contient l'offset
+                    _myAsciiDt.Rows[selectedPoint.Y][selectedPoint.X - 1] = Convert.ToChar(Convert.ToUInt32(newValue, 16));
+                    _byteFile[selectedPoint.Y * 16 + selectedPoint.X - 1] = Convert.ToByte(Convert.ToChar(Convert.ToUInt32(newValue, 16)));
+                }
+        }
+
+        /// <summary>
+        /// Change the value of a point
+        /// </summary>
+        /// <param name="selectedPoint">Point has changed</param>
+        /// <param name="newValue">The new value (ascii)</param>
+        public void ChangeValueAscii(Point selectedPoint, char newValue)
+        {
+            if (selectedPoint.X >= 1) //Offset
+                if (newValue.ToString() != _myAsciiDt.Rows[selectedPoint.Y].ItemArray[selectedPoint.X].ToString())
+                {
+                    if (!_changes.ContainsKey(selectedPoint))
+                        _changes.Add(selectedPoint, Hexadecimal[selectedPoint.Y][selectedPoint.X]);
+                    _myAsciiDt.Rows[selectedPoint.Y][selectedPoint.X] = newValue;
+                    Hexadecimal[selectedPoint.Y][selectedPoint.X + 1] = String.Format("{0:X}", Convert.ToInt32(newValue)); //Pas de "-1" car il contient l'offset
+                    _myDt.Rows[selectedPoint.Y][selectedPoint.X + 1] = String.Format("{0:X}", Convert.ToInt32(newValue)); //Pas de "-1" car il contient l'offset
+                    _byteFile[selectedPoint.Y * 16 + selectedPoint.X] = Convert.ToByte(newValue);
+                }
+        }
+
+        /// <summary>
+        /// Returns to the state before the changes
+        /// </summary>
+        /// <param name="selectedPoint">Point changed</param>
+        public void UndoChange(Point selectedPoint)
+        {
+            if (selectedPoint.X >= 1) //Offset
+                if (_changes.ContainsKey(selectedPoint))
+                {
+                    Hexadecimal[selectedPoint.Y][selectedPoint.X] = _changes[selectedPoint]; //Pas de "-1" car il contient l'offset
+                    _myDt.Rows[selectedPoint.Y][selectedPoint.X] = _changes[selectedPoint]; //Pas de "-1" car il contient l'offset
+                    _myAsciiDt.Rows[selectedPoint.Y][selectedPoint.X - 1] = Convert.ToChar(Convert.ToUInt32(_changes[selectedPoint], 16));
+                    _byteFile[selectedPoint.Y * 16 + selectedPoint.X - 1] = Convert.ToByte(Convert.ToChar(Convert.ToUInt32(_changes[selectedPoint], 16)));
+                    _changes.Remove(selectedPoint);
+                }
         }
     }
 }

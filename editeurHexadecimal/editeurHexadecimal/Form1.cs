@@ -14,6 +14,8 @@ namespace editeurHexadecimal {
         int firstRowIndex;
         Size previousSize;
         bool firstTime = true;
+        List<Point> redCellPosList = new List<Point>();
+        const int NB_ROW = 17;
 
         public Form1() {
             InitializeComponent();
@@ -29,7 +31,7 @@ namespace editeurHexadecimal {
             if (openFileDialog1.ShowDialog() == DialogResult.OK) {
                 model = new HexaEditModel(openFileDialog1.FileName);
                 firstRowIndex = 0;
-                updateGridView(true, 17);
+                updateGridView();
 
                 hexaGridView.Columns[0].Width = 55; // TO-DO: Je ne devrais pas définir cela ici 
                 hexaGridView.Columns[0].ReadOnly = true;
@@ -97,31 +99,32 @@ namespace editeurHexadecimal {
             }
         }
 
-        private void updateGridView(bool down, int nbRow) {
-            int firstWantedRow;
+        private void updateGridView(bool down) {
+            if (down && hexaGridView.Rows.Count != 0)
+                firstRowIndex += NB_ROW;
+            else if(!down && hexaGridView.Rows.Count != 0)
+                firstRowIndex -= NB_ROW;
 
-            if (hexaGridView.Rows.Count == 0)
-                firstWantedRow = 1;
-            else if (down)
-                firstWantedRow = hexaGridView.Rows[hexaGridView.Rows.Count - 1].Index + firstRowIndex + 1;
-            else
-                firstWantedRow = hexaGridView.Rows[0].Index + firstRowIndex - 1 - 17;
-
-            hexaGridView.DataSource = model.GetHexaDataTable(firstWantedRow, nbRow);
-            asciiGridView.DataSource = model.GetAsciiDataTable(firstWantedRow, nbRow);
+            hexaGridView.DataSource = model.GetHexaDataTable(firstRowIndex, NB_ROW);
+            asciiGridView.DataSource = model.GetAsciiDataTable(firstRowIndex, NB_ROW);
             asciiGridView.Rows[0].Cells[0].Selected = false; //It was automatically selected for an unknown reason
 
-            if (down)
-                firstRowIndex += 17;
-            else
-                firstRowIndex -= 17;
+            updateCellForeColor();
+        }
+
+        private void updateGridView() {
+            hexaGridView.DataSource = model.GetHexaDataTable(firstRowIndex, NB_ROW);
+            asciiGridView.DataSource = model.GetAsciiDataTable(firstRowIndex, NB_ROW);
+            asciiGridView.Rows[0].Cells[0].Selected = false; //It was automatically selected for an unknown reason
+
+            updateCellForeColor();
         }
 
         private void askRange(object sender, MouseEventArgs e) {
             if (e.Delta < 0) //scroll down
-                updateGridView(true, 17);
-            else if(firstRowIndex - 17 > 0)
-                updateGridView(false, 17);
+                updateGridView(true);
+            else if(firstRowIndex - NB_ROW >= 0)
+                updateGridView(false);
         }
 
         private void gridView_CellClick(object sender, DataGridViewCellEventArgs e) {
@@ -195,6 +198,53 @@ namespace editeurHexadecimal {
 
                 //hexaGridView.Columns[0].Width++;
             }
+        }
+
+        public void dataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e) {
+            DataGridView dgv = sender as DataGridView;
+            Point cellPos = new Point(e.ColumnIndex, e.RowIndex + firstRowIndex);
+
+            if (dgv.Name == "hexaGridView")
+            {
+                // test that the user didn't erase the content of the cell or write something longer than 2 character 
+                if (hexaGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != String.Empty && hexaGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().Length <= 2) { 
+                    model.ChangeValueHex(cellPos, hexaGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
+                    updateAfterEdit(e.RowIndex, e.ColumnIndex, cellPos);
+                } else {
+                    updateGridView(); // cancel user deletion
+                }
+            } else {
+                // test that the user didn't erase the content of the cell or write something longer than 1 character 
+                if (asciiGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != String.Empty && asciiGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().Length <= 1) {
+                    model.ChangeValueAscii(cellPos, Convert.ToChar(asciiGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value));
+                    updateAfterEdit(e.RowIndex, e.ColumnIndex + 1, new Point(e.ColumnIndex + 1, e.RowIndex));
+                } else {
+                    updateGridView(); // cancel user deletion
+                }
+            }
+
+            //TO_DO: il reste juste 1 bug : quand on click sur une autre cell après avoir édité, sans validé, celle courante
+        }
+
+        private void updateAfterEdit(int rowIndex, int columnIndex, Point cellPos) {
+            updateGridView();
+
+            hexaGridView.Rows[rowIndex].Cells[columnIndex].Style.ForeColor = Color.Red;
+            asciiGridView.Rows[rowIndex].Cells[columnIndex - 1].Style.ForeColor = Color.Red;
+
+            redCellPosList.Add(cellPos);
+        }
+
+        private void updateCellForeColor() {
+            foreach (DataGridViewRow row in hexaGridView.Rows)
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    if (redCellPosList.Contains(new Point(cell.ColumnIndex, cell.RowIndex + firstRowIndex)))
+                    {
+                        cell.Style.ForeColor = Color.Red;
+                        asciiGridView.Rows[cell.RowIndex].Cells[cell.ColumnIndex - 1].Style.ForeColor = Color.Red;
+                    }
+                }
         }
     }
 }

@@ -101,6 +101,7 @@
             this.hexaGridView.Size = new System.Drawing.Size(428, 397);
             this.hexaGridView.TabIndex = 3;
             this.hexaGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridView_CellClick);
+            this.hexaGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellEndEdit);
             // 
             // tctrlData
             // 
@@ -552,6 +553,7 @@
             this.asciiGridView.TabIndex = 9;
             this.asciiGridView.VirtualMode = true;
             this.asciiGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridView_CellClick);
+            this.asciiGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellEndEdit);
             // 
             // Form1
             // 

@@ -17,6 +17,7 @@ namespace ReadFileBits
         DataTable _myDt;
         DataTable _myAsciiDt;
         Dictionary<Point, string> _changes;
+        FileData _myFileData;
 
         /// <summary>
         /// Main and only constructor.
@@ -27,6 +28,7 @@ namespace ReadFileBits
             this._filePath = filePath;
             this._byteFile = File.ReadAllBytes(_filePath);
             this._changes = new Dictionary<Point, string>();
+            this._myFileData = new FileData(this._filePath);
         }
 
         /// <summary>
@@ -85,6 +87,14 @@ namespace ReadFileBits
         }
 
         /// <summary>
+        /// The object that contains all file metadata.
+        /// </summary>
+        public FileData MyFileData
+        {
+            get { return this._myFileData; }
+        }
+
+        /// <summary>
         /// Returns the Hexadecimal Array in a datatable.
         /// </summary>
         /// <returns></returns>
@@ -125,7 +135,7 @@ namespace ReadFileBits
         /// <returns></returns>
         public DataTable GetHexaDataTable(int startingRow, int nbRows)
         {
-            IEnumerable<DataRow> rows = this.GetHexaDataTable().AsEnumerable().Skip(startingRow - 1).Take(nbRows);
+            IEnumerable<DataRow> rows = this.GetHexaDataTable().AsEnumerable().Skip(startingRow).Take(nbRows);
             return rows.CopyToDataTable();
         }
 
@@ -165,7 +175,7 @@ namespace ReadFileBits
         /// <returns></returns>
         public DataTable GetAsciiDataTable(int startingRow, int nbRows)
         {
-            IEnumerable<DataRow> rows = this.GetAsciiDataTable().AsEnumerable().Skip(startingRow - 1).Take(nbRows);
+            IEnumerable<DataRow> rows = this.GetAsciiDataTable().AsEnumerable().Skip(startingRow).Take(nbRows);
             return rows.CopyToDataTable();
         }
 
@@ -454,6 +464,131 @@ namespace ReadFileBits
                     _byteFile[selectedPoint.Y * 16 + selectedPoint.X - 1] = Convert.ToByte(Convert.ToChar(Convert.ToUInt32(_changes[selectedPoint], 16)));
                     _changes.Remove(selectedPoint);
                 }
+        }
+
+        public class FileData
+        {
+            #region Variables
+
+            private FileInfo _fileInfo;
+            private string _name;
+            private DateTime _creationTime;
+            private DateTime _lastWriteTime;
+            private DateTime _lastAccessTime;
+            private string _shortName;
+            private string _attributes;
+            private long _fileSize;
+
+            #endregion
+
+            #region Properties
+
+            public string Name
+            {
+                get
+                {
+                    return _name;
+                }
+            }
+
+            public DateTime CreationTime
+            {
+                get
+                {
+                    return _creationTime;
+                }
+            }
+
+            public DateTime LastWriteTime
+            {
+                get
+                {
+                    return _lastWriteTime;
+                }
+            }
+
+            public DateTime LastAccessTime
+            {
+                get
+                {
+                    return _lastAccessTime;
+                }
+            }
+
+            public string Attributs
+            {
+                get
+                {
+                    return _attributes;
+                }
+            }
+
+            public long FileSize
+            {
+                get
+                {
+                    return _fileSize;
+                }
+            }
+
+            public string ShortName
+            {
+                get { return _shortName; }
+            }
+
+            #endregion
+
+            #region Methods
+
+            public FileData(string filename)
+            {
+                _fileInfo = new FileInfo(filename);
+                _name = _fileInfo.Name;
+                int tmpHoursToAdd = TimeZoneInfo.Local.BaseUtcOffset.Hours;
+                _creationTime = _fileInfo.CreationTimeUtc.AddHours(tmpHoursToAdd);
+                _lastWriteTime = _fileInfo.LastWriteTimeUtc.AddHours(tmpHoursToAdd);
+                _lastAccessTime = _fileInfo.LastAccessTimeUtc.AddHours(tmpHoursToAdd);
+                _attributes = GetLetterOfAttributs(_fileInfo.Attributes.ToString().Split(','));
+                _fileSize = _fileInfo.Length;
+                _shortName = ConvertToDOSFileName(this._name).ToUpper();
+            }
+
+            private static string ConvertToDOSFileName(string myStr)
+            {
+                string[] tempStr = myStr.Split('.');
+                if (tempStr[0].Length > 7)
+                    return tempStr[0].Substring(0, 6) + "~1." + tempStr[1];
+                return myStr;
+            }
+
+            private static string GetLetterOfAttributs(string[] listAttributs)
+            {
+                string returnValue = "";
+                string temp;
+                foreach (string item in listAttributs)
+                {
+                    temp = item.Trim();
+                    if (temp == "NotContentIndexed")
+                    {
+                        returnValue += "NCI ";
+                    }
+                    else if (temp == "SparseFile")
+                    {
+                        returnValue += "SF ";
+                    }
+                    else if (temp == "ReparsePoint")
+                    {
+                        returnValue += "RP ";
+                    }
+                    else
+                    {
+                        returnValue += temp[0] + " ";
+                    }
+                }
+                return returnValue;
+            }
+
+            #endregion
         }
     }
 }

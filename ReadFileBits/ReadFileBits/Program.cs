@@ -10,7 +10,15 @@ namespace ReadFileBits
         [Test]
         static void Main(string[] args)
         {
-            HexaEditModel _model = new HexaEditModel("C:\\Users\\durrenmatc_info\\Documents\\GitHub\\EditHexa\\TASKS.txt");
+            HexaEditModel _model = new HexaEditModel("C:\\Users\\nunesr_info\\Documents\\GitHub\\EditHexa\\TASKS.txt");
+
+            /*Console.WriteLine(_model.MyFileData.Attributs);
+            Console.WriteLine(_model.MyFileData.CreationTime);
+            Console.WriteLine(_model.MyFileData.FileSize);
+            Console.WriteLine(_model.MyFileData.LastAccessTime);
+            Console.WriteLine(_model.MyFileData.LastWriteTime);
+            Console.WriteLine(_model.MyFileData.Name);
+            Console.WriteLine(_model.MyFileData.ShortName);*/
 
             // Hexa tests
             Assert.AreEqual(_model.Hexadecimal[0][1], "5A");

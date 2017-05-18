@@ -62,7 +62,7 @@ namespace editeurHexadecimal {
                     setHexaDimension(true);
                     setAsciiDimension(true);
 
-                    lblAttribute.Text = model.MyFileData.Attributs;
+                    lblAttribute.Text = model.MyFileData.Attributes;
                     lblCreatedDate.Text = model.MyFileData.CreationTime.ToString();
                     lblLastAccess.Text = model.MyFileData.LastAccessTime.ToString();
                     lblModifyOn.Text = model.MyFileData.LastWriteTime.ToString();
@@ -74,8 +74,10 @@ namespace editeurHexadecimal {
 
                     nupPaging.Maximum = model.Hexadecimal.Count() / NB_ROW;
                     lblMax.Text = (model.Hexadecimal.Count() / NB_ROW).ToString() + " )";
+                    nupPaging.Enabled = true;
                 } else {
                     MessageBox.Show("Vous avez choisi un fichier vide");
+                    nupPaging.Enabled = false;
                 }
 
                 redCellPosList.Clear();
@@ -349,14 +351,13 @@ namespace editeurHexadecimal {
         }
 
         /// <summary>
-        /// Update the color of the edited cell and keep their location in a list
+        /// update the value of the 2 cells (in hexaGridView & asciiGridView with the new one)
         /// </summary>
         /// <param name="rowIndex">Row index of the edited cell (in the view)</param>
         /// <param name="columnIndex">Column index of the edited cell (in the view)</param>
         /// <param name="cellPos">Cell position (regarding the entire table and not just the view)</param>
         private void updateAfterEdit(int rowIndex, int columnIndex, Point cellPos)
         {
-            //updateGridView();
             hexaGridView.Rows[rowIndex].Cells[columnIndex].Value = model.Hexadecimal[rowIndex][columnIndex].ToString();
             asciiGridView.Rows[rowIndex].Cells[columnIndex - 1].Value = model.GetAsciiDataTable().Rows[rowIndex].ItemArray[columnIndex - 1].ToString();
         }
@@ -394,6 +395,24 @@ namespace editeurHexadecimal {
         private void nupPaging_ValueChanged(object sender, EventArgs e) {
             firstRowIndex = (int)nupPaging.Value * NB_ROW;
             updateGridView();
+        }
+
+        private void gridView_KeyPress(object sender, KeyPressEventArgs e) {
+            if (e.KeyChar == (char)Keys.Delete || e.KeyChar == (char)Keys.Back) {
+                if ((sender as DataGridView).Name == "hexaGridView") {
+                    DataGridViewCell clickedCell = hexaGridView.SelectedCells[0];
+                    Point cellPoint = new Point(clickedCell.ColumnIndex, clickedCell.RowIndex);
+                    model.UndoChange(cellPoint);
+                    redCellPosList.Remove(cellPoint);
+                } else {
+                    DataGridViewCell clickedCell = asciiGridView.SelectedCells[0];
+                    Point cellPoint = new Point(clickedCell.ColumnIndex + 1, clickedCell.RowIndex);
+                    model.UndoChange(cellPoint);
+                    redCellPosList.Remove(cellPoint);
+                }
+
+                updateGridView();
+            }
         }
     }
 }

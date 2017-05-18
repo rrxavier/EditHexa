@@ -27,13 +27,8 @@ namespace editeurHexadecimal
         {
             this._filePath = filePath;
             this._myFileData = new FileData(this._filePath);
-            if (MyFileData.FileSize > 0)
-                this._byteFile = File.ReadAllBytes(_filePath);
-            else
-                this._byteFile = new byte[0];
-
+            this._byteFile = File.ReadAllBytes(_filePath);
             this._changes = new Dictionary<Point, string>();
-
         }
 
         /// <summary>
@@ -476,11 +471,17 @@ namespace editeurHexadecimal
                 }
         }
 
+        /// <summary>
+        /// Save the file with the modification
+        /// </summary>
         public void Save()
         {
             File.WriteAllBytes(_filePath, _byteFile);
         }
 
+        /// <summary>
+        /// Metadata of the file
+        /// </summary>
         public class FileData
         {
             #region Variables
@@ -498,6 +499,9 @@ namespace editeurHexadecimal
 
             #region Properties
 
+            /// <summary>
+            /// Name of the file
+            /// </summary>
             public string Name
             {
                 get
@@ -506,6 +510,9 @@ namespace editeurHexadecimal
                 }
             }
 
+            /// <summary>
+            /// Date of creation of the file
+            /// </summary>
             public DateTime CreationTime
             {
                 get
@@ -514,6 +521,9 @@ namespace editeurHexadecimal
                 }
             }
 
+            /// <summary>
+            /// Date of the last modification on the file
+            /// </summary>
             public DateTime LastWriteTime
             {
                 get
@@ -522,6 +532,9 @@ namespace editeurHexadecimal
                 }
             }
 
+            /// <summary>
+            /// Date of the last access of the file
+            /// </summary>
             public DateTime LastAccessTime
             {
                 get
@@ -530,7 +543,10 @@ namespace editeurHexadecimal
                 }
             }
 
-            public string Attributs
+            /// <summary>
+            /// Attributes letters of the file
+            /// </summary>
+            public string Attributes
             {
                 get
                 {
@@ -538,6 +554,9 @@ namespace editeurHexadecimal
                 }
             }
 
+            /// <summary>
+            /// Size of the file
+            /// </summary>
             public long FileSize
             {
                 get
@@ -546,6 +565,9 @@ namespace editeurHexadecimal
                 }
             }
 
+            /// <summary>
+            /// DOS name of the file
+            /// </summary>
             public string ShortName
             {
                 get { return _shortName; }
@@ -555,6 +577,10 @@ namespace editeurHexadecimal
 
             #region Methods
 
+            /// <summary>
+            /// Constructor of the class
+            /// </summary>
+            /// <param name="filename">Path of the file</param>
             public FileData(string filename)
             {
                 _fileInfo = new FileInfo(filename);
@@ -568,6 +594,11 @@ namespace editeurHexadecimal
                 _shortName = ConvertToDOSFileName(this._name).ToUpper();
             }
 
+            /// <summary>
+            /// Convert a given string to a DOS file name
+            /// </summary>
+            /// <param name="myStr">string to convert</param>
+            /// <returns>Return the converted file</returns>
             private static string ConvertToDOSFileName(string myStr)
             {
                 string[] tempStr = myStr.Split('.');
@@ -576,6 +607,11 @@ namespace editeurHexadecimal
                 return myStr;
             }
 
+            /// <summary>
+            /// Get the attributes letters
+            /// </summary>
+            /// <param name="listAttributs">List of all attributes letter</param>
+            /// <returns>Contactenation of all the letters</returns>
             private static string GetLetterOfAttributs(string[] listAttributs)
             {
                 string returnValue = "";

@@ -75,9 +75,11 @@ namespace editeurHexadecimal {
                     nupPaging.Maximum = model.Hexadecimal.Count() / NB_ROW;
                     lblMax.Text = (model.Hexadecimal.Count() / NB_ROW).ToString() + " )";
                     nupPaging.Enabled = true;
+                    btnSave.Enabled = true;
                 } else {
                     MessageBox.Show("Vous avez choisi un fichier vide");
                     nupPaging.Enabled = false;
+                    btnSave.Enabled = false;
                 }
 
                 redCellPosList.Clear();
@@ -383,8 +385,10 @@ namespace editeurHexadecimal {
         /// <param name="sender">The clicked button</param>
         /// <param name="e">Argument of the event</param>
         private void btnSave_Click(object sender, EventArgs e) {
-            if(MessageBox.Show("Etes-vous sûr de vouloir enregister les changements?", "Confirmation d'enregistrement", MessageBoxButtons.OKCancel) == DialogResult.OK)
-                model.Save();
+            if (DialogResult.OK == saveFileDialog1.ShowDialog()) {
+                if (model != null)
+                    model.Save(saveFileDialog1.FileName);
+            }
         }
 
         /// <summary>
@@ -397,6 +401,11 @@ namespace editeurHexadecimal {
             updateGridView();
         }
 
+        /// <summary>
+        /// Return the cell to it's original value if the delete or backspace keys are pressed
+        /// </summary>
+        /// <param name="sender">The DatagridView on which a key has been pressed</param>
+        /// <param name="e">Arguments of the event</param>
         private void gridView_KeyPress(object sender, KeyPressEventArgs e) {
             if (e.KeyChar == (char)Keys.Delete || e.KeyChar == (char)Keys.Back) {
                 if ((sender as DataGridView).Name == "hexaGridView") {
@@ -414,5 +423,6 @@ namespace editeurHexadecimal {
                 updateGridView();
             }
         }
+
     }
 }

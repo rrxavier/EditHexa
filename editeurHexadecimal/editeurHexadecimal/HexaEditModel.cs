@@ -474,9 +474,9 @@ namespace editeurHexadecimal
         /// <summary>
         /// Save the file with the modification
         /// </summary>
-        public void Save()
-        {
-            File.WriteAllBytes(_filePath, _byteFile);
+        /// <param name="path">Path of the saved file</param>
+        public void Save(string path) {
+            File.WriteAllBytes(path, _byteFile);
         }
 
         /// <summary>

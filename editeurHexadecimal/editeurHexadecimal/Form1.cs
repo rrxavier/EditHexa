@@ -11,13 +11,16 @@ using System.Windows.Forms;
 namespace editeurHexadecimal {
     public partial class frmMain : Form {
         HexaEditModel model;
-        int firstRowIndex = 0;
-        Size previousSize;
-        bool firstTime = true;
+        int firstRowIndex = 0; //index of the first row (in comparison with the whole data set, not just the part shown in the view
+        Size previousSize; //Size of the form before it was resized
+        bool firstTime = true; //First time 
         List<Point> redCellPosList = new List<Point>();
         const int NB_ROW = 17;
         const int OFFSET_COLUMN_WIDTH = 55;
 
+        /// <summary>
+        /// Form constructor
+        /// </summary>
         public frmMain() {
             InitializeComponent();
             firstTime = false;
@@ -62,9 +65,12 @@ namespace editeurHexadecimal {
                 lblName.Text = model.MyFileData.Name;
                 lblShortName.Text = model.MyFileData.ShortName;
                 lblSize.Text = model.MyFileData.FileSize.ToString();
-            }
 
-            asciiGridView.Rows[0].Cells[0].Selected = false; //It was automatically selected for an unknown reason
+                asciiGridView.Rows[0].Cells[0].Selected = false; //It was automatically selected for an unknown reason
+
+                nupPaging.Maximum = model.Hexadecimal.Count() / NB_ROW;
+                lblMax.Text = (model.Hexadecimal.Count() / NB_ROW).ToString() + " )";
+            }
         }
 
         /// <summary>
@@ -216,10 +222,7 @@ namespace editeurHexadecimal {
             //Regarding -1 : There is one less column in the ascii table
 
             //Get the ascii equivalent of the byte in the ascii table
-            if(asciiTable)
-                lblChar.Text = model.GetAsciiDataTable().Rows[cellPt.Y][cellPt.X].ToString();
-            else
-                lblChar.Text = model.GetAsciiDataTable().Rows[cellPt.Y][cellPt.X - 1].ToString();
+            lblChar.Text = model.GetAsciiDataTable().Rows[cellPt.Y][cellPt.X - 1].ToString();
 
             lblBinary.Text = model.ConvertHexaToBinary(cellPt);
             lblOctal.Text = model.ConvertHexaToOctal(cellPt);
@@ -341,6 +344,16 @@ namespace editeurHexadecimal {
                         asciiGridView.Rows[cell.RowIndex].Cells[cell.ColumnIndex - 1].Style.ForeColor = Color.Red;
                     }
                 }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e) {
+            if(MessageBox.Show("Etes-vous sûr de vouloir enregister les changements?", "Confirmation d'enregistrement", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                model.Save();
+        }
+
+        private void nupPaging_ValueChanged(object sender, EventArgs e) {
+            firstRowIndex = (int)nupPaging.Value * NB_ROW;
+            updateGridView();
         }
     }
 }

@@ -425,6 +425,10 @@ namespace editeurHexadecimal {
                 }
         }
 
+        public void Save() {
+            File.WriteAllBytes(_filePath, _byteFile);
+        }
+
         public class FileData {
             #region Variables
 

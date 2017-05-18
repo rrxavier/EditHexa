@@ -71,9 +71,9 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.asciiGridView = new System.Windows.Forms.DataGridView();
             this.btnSave = new System.Windows.Forms.Button();
-            this.label12 = new System.Windows.Forms.Label();
+            this.lblNupInfo1 = new System.Windows.Forms.Label();
             this.nupPaging = new System.Windows.Forms.NumericUpDown();
-            this.label17 = new System.Windows.Forms.Label();
+            this.lblNupInfo2 = new System.Windows.Forms.Label();
             this.lblMax = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.hexaGridView)).BeginInit();
             this.tctrlData.SuspendLayout();
@@ -578,36 +578,36 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // label12
+            // lblNupInfo1
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(274, 446);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(129, 13);
-            this.label12.TabIndex = 12;
-            this.label12.Text = "Avancer jusqu\'à la plage :";
+            this.lblNupInfo1.AutoSize = true;
+            this.lblNupInfo1.Location = new System.Drawing.Point(274, 446);
+            this.lblNupInfo1.Name = "lblNupInfo1";
+            this.lblNupInfo1.Size = new System.Drawing.Size(129, 13);
+            this.lblNupInfo1.TabIndex = 12;
+            this.lblNupInfo1.Text = "Avancer jusqu\'à la plage :";
             // 
             // nupPaging
             // 
             this.nupPaging.Location = new System.Drawing.Point(409, 444);
             this.nupPaging.Name = "nupPaging";
-            this.nupPaging.Size = new System.Drawing.Size(34, 20);
+            this.nupPaging.Size = new System.Drawing.Size(47, 20);
             this.nupPaging.TabIndex = 13;
             this.nupPaging.ValueChanged += new System.EventHandler(this.nupPaging_ValueChanged);
             // 
-            // label17
+            // lblNupInfo2
             // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(449, 446);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(63, 13);
-            this.label17.TabIndex = 14;
-            this.label17.Text = "( Maximum :";
+            this.lblNupInfo2.AutoSize = true;
+            this.lblNupInfo2.Location = new System.Drawing.Point(462, 446);
+            this.lblNupInfo2.Name = "lblNupInfo2";
+            this.lblNupInfo2.Size = new System.Drawing.Size(63, 13);
+            this.lblNupInfo2.TabIndex = 14;
+            this.lblNupInfo2.Text = "( Maximum :";
             // 
             // lblMax
             // 
             this.lblMax.AutoSize = true;
-            this.lblMax.Location = new System.Drawing.Point(513, 446);
+            this.lblMax.Location = new System.Drawing.Point(526, 446);
             this.lblMax.Name = "lblMax";
             this.lblMax.Size = new System.Drawing.Size(19, 13);
             this.lblMax.TabIndex = 15;
@@ -619,9 +619,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1201, 507);
             this.Controls.Add(this.lblMax);
-            this.Controls.Add(this.label17);
+            this.Controls.Add(this.lblNupInfo2);
             this.Controls.Add(this.nupPaging);
-            this.Controls.Add(this.label12);
+            this.Controls.Add(this.lblNupInfo1);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.asciiGridView);
             this.Controls.Add(this.btnOpenFile);
@@ -693,9 +693,9 @@
         private System.Windows.Forms.Label lbl64BitsSigned;
         private System.Windows.Forms.Label lbl11;
         private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label lblNupInfo1;
         private System.Windows.Forms.NumericUpDown nupPaging;
-        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label lblNupInfo2;
         private System.Windows.Forms.Label lblMax;
     }
 }

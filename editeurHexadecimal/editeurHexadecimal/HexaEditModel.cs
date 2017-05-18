@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Data;
 
-namespace editeurHexadecimal {
-    class HexaEditModel {
+namespace editeurHexadecimal
+{
+    class HexaEditModel
+    {
         string _filePath;
         byte[] _byteFile;
         string[][] _hexaArray;
@@ -21,33 +23,44 @@ namespace editeurHexadecimal {
         /// Main and only constructor.
         /// </summary>
         /// <param name="filePath">File path.</param>
-        public HexaEditModel(string filePath) {
+        public HexaEditModel(string filePath)
+        {
             this._filePath = filePath;
-            this._byteFile = File.ReadAllBytes(_filePath);
-            this._changes = new Dictionary<Point, string>();
             this._myFileData = new FileData(this._filePath);
+            if (MyFileData.FileSize > 0)
+                this._byteFile = File.ReadAllBytes(_filePath);
+            else
+                this._byteFile = new byte[0];
+
+            this._changes = new Dictionary<Point, string>();
+
         }
 
         /// <summary>
         /// File path.
         /// </summary>
-        public string FilePath {
+        public string FilePath
+        {
             get { return _filePath; }
         }
 
         /// <summary>
         /// Bytes of each individual char in the file.
         /// </summary>
-        public byte[] ByteFile {
+        public byte[] ByteFile
+        {
             get { return _byteFile; }
         }
 
         /// <summary>
         /// The ByteFile Array converted to Hexadecimal.
         /// </summary>
-        public string[][] Hexadecimal {
-            get {
-                if (_hexaArray == null) {
+        public string[][] Hexadecimal
+        {
+            get
+            {
+                if (_hexaArray == null)
+                {
                     double rawDivision = Convert.ToDouble(ByteFile.Length) / Convert.ToDouble(16);
                     int lineNb = (int)rawDivision + (rawDivision.ToString().Contains('.') ? 1 : 0);
 
@@ -55,9 +68,11 @@ namespace editeurHexadecimal {
 
                     int actualLine = -1;
 
-                    for (int i = 0, j = 0; i < ByteFile.Length + lineNb; i++, j++) {
+                    for (int i = 0, j = 0; i < ByteFile.Length + lineNb; i++, j++)
+                    {
                         int modulo = i % 17;
-                        if (modulo == 0) {
+                        if (modulo == 0)
+                        {
                             actualLine++;
                             myArray[actualLine] = new string[17];
                             myArray[actualLine][0] = String.Format("{0:X5}0", actualLine);
@@ -77,7 +92,8 @@ namespace editeurHexadecimal {
         /// <summary>
         /// The object that contains all file metadata.
         /// </summary>
-        public FileData MyFileData {
+        public FileData MyFileData
+        {
             get { return this._myFileData; }
         }
 
@@ -85,12 +101,15 @@ namespace editeurHexadecimal {
         /// Returns the Hexadecimal Array in a datatable.
         /// </summary>
         /// <returns></returns>
-        public DataTable GetHexaDataTable() {
-            if (_myDt == null) {
+        public DataTable GetHexaDataTable()
+        {
+            if (_myDt == null)
+            {
                 DataTable dt = new DataTable();
 
                 // Create columns
-                for (int i = 0; i < 17; i++) {
+                for (int i = 0; i < 17; i++)
+                {
                     DataColumn dc = new DataColumn();
                     dc.DataType = System.Type.GetType("System.String");
 
@@ -117,8 +136,14 @@ namespace editeurHexadecimal {
         /// <param name="startingRow">Starting row.</param>
         /// <param name="nbRows">Number of rows to take.</param>
         /// <returns></returns>
-        public DataTable GetHexaDataTable(int startingRow, int nbRows) {
-            IEnumerable<DataRow> rows = this.GetHexaDataTable().AsEnumerable().Skip(startingRow).Take(nbRows);
+        public DataTable GetHexaDataTable(int startingRow, int nbRows)
+        {
+            DataTable dtTemp = this.GetHexaDataTable();
+
+            if (dtTemp.Rows.Count == 0)
+                return new DataTable();
+
+            IEnumerable<DataRow> rows = dtTemp.AsEnumerable().Skip(startingRow).Take(nbRows);
             return rows.CopyToDataTable();
         }
 
@@ -126,16 +151,20 @@ namespace editeurHexadecimal {
         /// Returns the Hexadecimal Array in a datatable.
         /// </summary>
         /// <returns></returns>
-        public DataTable GetAsciiDataTable() {
-            if (_myAsciiDt == null) {
+        public DataTable GetAsciiDataTable()
+        {
+            if (_myAsciiDt == null)
+            {
                 DataTable dt = new DataTable();
 
                 for (int i = 0; i < 16; i++)
                     dt.Columns.Add(new DataColumn());
 
-                foreach (string[] line in this.Hexadecimal) {
+                foreach (string[] line in this.Hexadecimal)
+                {
                     object[] convertedLine = new object[16];
-                    for (int i = 0; i < line.Length; i++) {
+                    for (int i = 0; i < line.Length; i++)
+                    {
                         if (line[i] != null && !(line[i].Length > 2))
                             convertedLine[i - 1] = Convert.ToChar(Convert.ToUInt32(line[i], 16));
                     }
@@ -152,8 +181,14 @@ namespace editeurHexadecimal {
         /// <param name="startingRow">Starting row.</param>
         /// <param name="nbRows">Number of rows to take.</param>
         /// <returns></returns>
-        public DataTable GetAsciiDataTable(int startingRow, int nbRows) {
-            IEnumerable<DataRow> rows = this.GetAsciiDataTable().AsEnumerable().Skip(startingRow).Take(nbRows);
+        public DataTable GetAsciiDataTable(int startingRow, int nbRows)
+        {
+            DataTable dtTemp = this.GetAsciiDataTable();
+
+            if (dtTemp.Rows.Count == 0)
+                return new DataTable();
+
+            IEnumerable<DataRow> rows = dtTemp.AsEnumerable().Skip(startingRow).Take(nbRows);
             return rows.CopyToDataTable();
         }
 
@@ -162,7 +197,8 @@ namespace editeurHexadecimal {
         /// </summary>
         /// <param name="coords">Coords of the first point.</param>
         /// <returns></returns>
-        public string ConvertHexaToBinary(Point coords) {
+        public string ConvertHexaToBinary(Point coords)
+        {
             return Convert.ToString(Convert.ToInt32(this.Hexadecimal[coords.Y][coords.X], 16), 2);
         }
 
@@ -171,7 +207,8 @@ namespace editeurHexadecimal {
         /// </summary>
         /// <param name="coords">Coords of the first point.</param>
         /// <returns></returns>
-        public string ConvertHexaToDecimal(Point coords) {
+        public string ConvertHexaToDecimal(Point coords)
+        {
             return Convert.ToInt32(this.Hexadecimal[coords.Y][coords.X], 16).ToString();
         }
 
@@ -180,7 +217,8 @@ namespace editeurHexadecimal {
         /// </summary>
         /// <param name="coords">Coords of the first point.</param>
         /// <returns></returns>
-        public string ConvertHexaToOctal(Point coords) {
+        public string ConvertHexaToOctal(Point coords)
+        {
             return Convert.ToString(Convert.ToInt32(this.Hexadecimal[coords.Y][coords.X], 16), 8);
         }
 
@@ -189,7 +227,8 @@ namespace editeurHexadecimal {
         /// </summary>
         /// <param name="coords">Coords of the first point.</param>
         /// <returns></returns>
-        public string ConvertHexaTo8BitsSigned(Point coords) {
+        public string ConvertHexaTo8BitsSigned(Point coords)
+        {
             return Convert.ToString(Convert.ToSByte(this.Hexadecimal[coords.Y][coords.X], 16)); // 8bits = 2 hexadecimal digits
         }
 
@@ -198,7 +237,8 @@ namespace editeurHexadecimal {
         /// </summary>
         /// <param name="coords">Coords of the first point.</param>
         /// <returns></returns>
-        public string ConvertHexaTo8BitsUnsigned(Point coords) {
+        public string ConvertHexaTo8BitsUnsigned(Point coords)
+        {
             return Convert.ToString(Convert.ToByte(this.Hexadecimal[coords.Y][coords.X], 16)); // 8bits = 2 hexadecimal digits
         }
 
@@ -207,12 +247,13 @@ namespace editeurHexadecimal {
         /// </summary>
         /// <param name="coords">Coords of the first point.</param>
         /// <returns></returns>
-        public string ConvertHexaTo16BitsSigned(Point coords) {
+        public string ConvertHexaTo16BitsSigned(Point coords)
+        {
             Point coords2;
 
             coords2 = GetNewCoords(coords);
 
-            if (this.Hexadecimal[coords2.Y][coords2.X] != null && coords2.Y * 16 + coords2.X < ByteFile.Length)
+            if (coords2.Y * 16 + coords2.X <= ByteFile.Length)
                 return Convert.ToString(Convert.ToInt16(this.Hexadecimal[coords2.Y][coords2.X] + this.Hexadecimal[coords.Y][coords.X], 16)); // 16bits = 4 hexadecimal digits
             else
                 return "Données hors limite.";
@@ -223,12 +264,13 @@ namespace editeurHexadecimal {
         /// </summary>
         /// <param name="coords">Coords of the first point.</param>
         /// <returns></returns>
-        public string ConvertHexaTo16BitsUnsigned(Point coords) {
+        public string ConvertHexaTo16BitsUnsigned(Point coords)
+        {
             Point coords2;
 
             coords2 = GetNewCoords(coords);
 
-            if (this.Hexadecimal[coords2.Y][coords2.X] != null && coords2.Y * 16 + coords2.X < ByteFile.Length)
+            if (coords2.Y * 16 + coords2.X <= ByteFile.Length)
                 return Convert.ToString(Convert.ToUInt16(this.Hexadecimal[coords2.Y][coords2.X] + this.Hexadecimal[coords.Y][coords.X], 16)); // 16bits = 4 hexadecimal digits
             else
                 return "Données hors limite.";
@@ -239,7 +281,8 @@ namespace editeurHexadecimal {
         /// </summary>
         /// <param name="coords">Coords of the first point.</param>
         /// <returns></returns>
-        public string ConvertHexaTo32BitsSigned(Point coords) {
+        public string ConvertHexaTo32BitsSigned(Point coords)
+        {
             Point coords2;
             Point coords3;
             Point coords4;
@@ -247,8 +290,7 @@ namespace editeurHexadecimal {
             coords2 = GetNewCoords(coords);
             coords3 = GetNewCoords(coords2);
             coords4 = GetNewCoords(coords3);
-
-            if (this.Hexadecimal[coords4.Y][coords4.X] != null && coords4.Y * 16 + coords4.X < ByteFile.Length)
+            if (coords4.Y * 16 + coords4.X <= ByteFile.Length)
                 return Convert.ToString(Convert.ToInt32(this.Hexadecimal[coords4.Y][coords4.X] + this.Hexadecimal[coords3.Y][coords3.X] + this.Hexadecimal[coords2.Y][coords2.X] + this.Hexadecimal[coords.Y][coords.X], 16)); //32bits = 8 hexadecimal digits
             else
                 return "Données hors limite.";
@@ -259,7 +301,8 @@ namespace editeurHexadecimal {
         /// </summary>
         /// <param name="coords">Coords of the first point.</param>
         /// <returns></returns>
-        public string ConvertHexaTo32BitsUnsigned(Point coords) {
+        public string ConvertHexaTo32BitsUnsigned(Point coords)
+        {
             Point coords2;
             Point coords3;
             Point coords4;
@@ -267,11 +310,10 @@ namespace editeurHexadecimal {
             coords2 = GetNewCoords(coords);
             coords3 = GetNewCoords(coords2);
             coords4 = GetNewCoords(coords3);
-
-            if (this.Hexadecimal[coords4.Y][coords4.X] != null && coords4.Y * 16 + coords4.X < ByteFile.Length)
+            if (coords4.Y * 16 + coords4.X <= ByteFile.Length)
                 return Convert.ToString(Convert.ToUInt32(this.Hexadecimal[coords4.Y][coords4.X] + this.Hexadecimal[coords3.Y][coords3.X] + this.Hexadecimal[coords2.Y][coords2.X] + this.Hexadecimal[coords.Y][coords.X], 16)); //32bits = 8 hexadecimal digits
             else
-                return "Données hors limite.";
+            return "Données hors limite.";
         }
 
         /// <summary>
@@ -279,7 +321,8 @@ namespace editeurHexadecimal {
         /// </summary>
         /// <param name="coords">Coords of the first point.</param>
         /// <returns></returns>
-        public string ConvertHexaTo64BitsSigned(Point coords) {
+        public string ConvertHexaTo64BitsSigned(Point coords)
+        {
             Point coords2;
             Point coords3;
             Point coords4;
@@ -296,7 +339,7 @@ namespace editeurHexadecimal {
             coords7 = GetNewCoords(coords6);
             coords8 = GetNewCoords(coords7);
 
-            if (this.Hexadecimal[coords8.Y][coords8.X] != null && coords8.Y * 16 + coords8.X < ByteFile.Length)
+            if (coords8.Y * 16 + coords8.X <= ByteFile.Length)
                 return Convert.ToString(Convert.ToInt64(this.Hexadecimal[coords8.Y][coords8.X] +
                     this.Hexadecimal[coords7.Y][coords7.X] +
                     this.Hexadecimal[coords6.Y][coords6.X] +
@@ -314,7 +357,8 @@ namespace editeurHexadecimal {
         /// </summary>
         /// <param name="coords">Coords of the first point.</param>
         /// <returns></returns>
-        public string ConvertHexaToFloat(Point coords) {
+        public string ConvertHexaToFloat(Point coords)
+        {
             Point coords2;
             Point coords3;
             Point coords4;
@@ -322,8 +366,7 @@ namespace editeurHexadecimal {
             coords2 = GetNewCoords(coords);
             coords3 = GetNewCoords(coords2);
             coords4 = GetNewCoords(coords3);
-
-            if (this.Hexadecimal[coords4.Y][coords4.X] != null && coords4.Y * 16 + coords4.X < ByteFile.Length)
+            if (coords4.Y * 16 + coords4.X <= ByteFile.Length)
                 return Convert.ToString(BitConverter.ToSingle(BitConverter.GetBytes(uint.Parse(this.Hexadecimal[coords4.Y][coords4.X] + this.Hexadecimal[coords3.Y][coords3.X] + this.Hexadecimal[coords2.Y][coords2.X] + this.Hexadecimal[coords.Y][coords.X], System.Globalization.NumberStyles.AllowHexSpecifier)), 0)); //32bits = 8 hexadecimal digits
             else
                 return "Données hors limite.";
@@ -334,7 +377,8 @@ namespace editeurHexadecimal {
         /// </summary>
         /// <param name="coords">Coords of the first point.</param>
         /// <returns></returns>
-        public string ConvertHexaToDouble(Point coords) {
+        public string ConvertHexaToDouble(Point coords)
+        {
             Point coords2;
             Point coords3;
             Point coords4;
@@ -351,7 +395,7 @@ namespace editeurHexadecimal {
             coords7 = GetNewCoords(coords6);
             coords8 = GetNewCoords(coords7);
 
-            if (this.Hexadecimal[coords8.Y][coords8.X] != null && coords8.Y * 16 + coords8.X < ByteFile.Length)
+            if (coords8.Y * 16 + coords8.X <= ByteFile.Length)
                 return Convert.ToString(BitConverter.ToDouble(BitConverter.GetBytes(Convert.ToInt64(this.Hexadecimal[coords8.Y][coords8.X] +
                     this.Hexadecimal[coords7.Y][coords7.X] +
                     this.Hexadecimal[coords6.Y][coords6.X] +
@@ -369,8 +413,9 @@ namespace editeurHexadecimal {
         /// </summary>
         /// <param name="previousPoint">Starting point.</param>
         /// <returns>Next point.</returns>
-        private static Point GetNewCoords(Point previousPoint) {
-            if (previousPoint.X + 1 > 15)
+        private static Point GetNewCoords(Point previousPoint)
+        {
+            if (previousPoint.X + 1 > 16)
                 return new Point(1, previousPoint.Y + 1);
             else
                 return new Point(previousPoint.X + 1, previousPoint.Y);
@@ -381,9 +426,11 @@ namespace editeurHexadecimal {
         /// </summary>
         /// <param name="selectedPoint">Point has changed</param>
         /// <param name="newValue">The new value (hexadecimal)</param>
-        public void ChangeValueHex(Point selectedPoint, string newValue) {
+        public void ChangeValueHex(Point selectedPoint, string newValue)
+        {
             if (selectedPoint.X >= 1) //Offset
-                if (newValue != Hexadecimal[selectedPoint.Y][selectedPoint.X]) {
+                if (newValue != Hexadecimal[selectedPoint.Y][selectedPoint.X])
+                {
                     if (!_changes.ContainsKey(selectedPoint))
                         _changes.Add(selectedPoint, Hexadecimal[selectedPoint.Y][selectedPoint.X]);
                     Hexadecimal[selectedPoint.Y][selectedPoint.X] = newValue; //Pas de "-1" car il contient l'offset
@@ -398,9 +445,11 @@ namespace editeurHexadecimal {
         /// </summary>
         /// <param name="selectedPoint">Point has changed</param>
         /// <param name="newValue">The new value (ascii)</param>
-        public void ChangeValueAscii(Point selectedPoint, char newValue) {
+        public void ChangeValueAscii(Point selectedPoint, char newValue)
+        {
             if (selectedPoint.X >= 1) //Offset
-                if (newValue.ToString() != _myAsciiDt.Rows[selectedPoint.Y].ItemArray[selectedPoint.X].ToString()) {
+                if (newValue.ToString() != _myAsciiDt.Rows[selectedPoint.Y].ItemArray[selectedPoint.X].ToString())
+                {
                     if (!_changes.ContainsKey(selectedPoint))
                         _changes.Add(selectedPoint, Hexadecimal[selectedPoint.Y][selectedPoint.X]);
                     _myAsciiDt.Rows[selectedPoint.Y][selectedPoint.X] = newValue;
@@ -414,9 +463,11 @@ namespace editeurHexadecimal {
         /// Returns to the state before the changes
         /// </summary>
         /// <param name="selectedPoint">Point changed</param>
-        public void UndoChange(Point selectedPoint) {
+        public void UndoChange(Point selectedPoint)
+        {
             if (selectedPoint.X >= 1) //Offset
-                if (_changes.ContainsKey(selectedPoint)) {
+                if (_changes.ContainsKey(selectedPoint))
+                {
                     Hexadecimal[selectedPoint.Y][selectedPoint.X] = _changes[selectedPoint]; //Pas de "-1" car il contient l'offset
                     _myDt.Rows[selectedPoint.Y][selectedPoint.X] = _changes[selectedPoint]; //Pas de "-1" car il contient l'offset
                     _myAsciiDt.Rows[selectedPoint.Y][selectedPoint.X - 1] = Convert.ToChar(Convert.ToUInt32(_changes[selectedPoint], 16));
@@ -425,11 +476,13 @@ namespace editeurHexadecimal {
                 }
         }
 
-        public void Save() {
+        public void Save()
+        {
             File.WriteAllBytes(_filePath, _byteFile);
         }
 
-        public class FileData {
+        public class FileData
+        {
             #region Variables
 
             private FileInfo _fileInfo;
@@ -445,43 +498,56 @@ namespace editeurHexadecimal {
 
             #region Properties
 
-            public string Name {
-                get {
+            public string Name
+            {
+                get
+                {
                     return _name;
                 }
             }
 
-            public DateTime CreationTime {
-                get {
+            public DateTime CreationTime
+            {
+                get
+                {
                     return _creationTime;
                 }
             }
 
-            public DateTime LastWriteTime {
-                get {
+            public DateTime LastWriteTime
+            {
+                get
+                {
                     return _lastWriteTime;
                 }
             }
 
-            public DateTime LastAccessTime {
-                get {
+            public DateTime LastAccessTime
+            {
+                get
+                {
                     return _lastAccessTime;
                 }
             }
 
-            public string Attributs {
-                get {
+            public string Attributs
+            {
+                get
+                {
                     return _attributes;
                 }
             }
 
-            public long FileSize {
-                get {
+            public long FileSize
+            {
+                get
+                {
                     return _fileSize;
                 }
             }
 
-            public string ShortName {
+            public string ShortName
+            {
                 get { return _shortName; }
             }
 
@@ -489,7 +555,8 @@ namespace editeurHexadecimal {
 
             #region Methods
 
-            public FileData(string filename) {
+            public FileData(string filename)
+            {
                 _fileInfo = new FileInfo(filename);
                 _name = _fileInfo.Name;
                 int tmpHoursToAdd = TimeZoneInfo.Local.BaseUtcOffset.Hours;
@@ -501,25 +568,35 @@ namespace editeurHexadecimal {
                 _shortName = ConvertToDOSFileName(this._name).ToUpper();
             }
 
-            private static string ConvertToDOSFileName(string myStr) {
+            private static string ConvertToDOSFileName(string myStr)
+            {
                 string[] tempStr = myStr.Split('.');
                 if (tempStr[0].Length > 7)
                     return tempStr[0].Substring(0, 6) + "~1." + tempStr[1];
                 return myStr;
             }
 
-            private static string GetLetterOfAttributs(string[] listAttributs) {
+            private static string GetLetterOfAttributs(string[] listAttributs)
+            {
                 string returnValue = "";
                 string temp;
-                foreach (string item in listAttributs) {
+                foreach (string item in listAttributs)
+                {
                     temp = item.Trim();
-                    if (temp == "NotContentIndexed") {
+                    if (temp == "NotContentIndexed")
+                    {
                         returnValue += "NCI ";
-                    } else if (temp == "SparseFile") {
+                    }
+                    else if (temp == "SparseFile")
+                    {
                         returnValue += "SF ";
-                    } else if (temp == "ReparsePoint") {
+                    }
+                    else if (temp == "ReparsePoint")
+                    {
                         returnValue += "RP ";
-                    } else {
+                    }
+                    else
+                    {
                         returnValue += temp[0] + " ";
                     }
                 }

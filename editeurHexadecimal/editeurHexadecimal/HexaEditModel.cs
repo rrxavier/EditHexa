@@ -23,9 +23,14 @@ namespace editeurHexadecimal {
         /// <param name="filePath">File path.</param>
         public HexaEditModel(string filePath) {
             this._filePath = filePath;
-            this._byteFile = File.ReadAllBytes(_filePath);
-            this._changes = new Dictionary<Point, string>();
             this._myFileData = new FileData(this._filePath);
+            if (MyFileData.FileSize > 0)
+                this._byteFile = File.ReadAllBytes(_filePath);
+            else
+                this._byteFile = new byte[0];
+
+            this._changes = new Dictionary<Point, string>();
+            
         }
 
         /// <summary>
@@ -118,7 +123,12 @@ namespace editeurHexadecimal {
         /// <param name="nbRows">Number of rows to take.</param>
         /// <returns></returns>
         public DataTable GetHexaDataTable(int startingRow, int nbRows) {
-            IEnumerable<DataRow> rows = this.GetHexaDataTable().AsEnumerable().Skip(startingRow).Take(nbRows);
+            DataTable dtTemp = this.GetHexaDataTable();
+
+            if (dtTemp.Rows.Count == 0)
+                return new DataTable();
+
+            IEnumerable<DataRow> rows = dtTemp.AsEnumerable().Skip(startingRow).Take(nbRows);
             return rows.CopyToDataTable();
         }
 
@@ -153,7 +163,12 @@ namespace editeurHexadecimal {
         /// <param name="nbRows">Number of rows to take.</param>
         /// <returns></returns>
         public DataTable GetAsciiDataTable(int startingRow, int nbRows) {
-            IEnumerable<DataRow> rows = this.GetAsciiDataTable().AsEnumerable().Skip(startingRow).Take(nbRows);
+            DataTable dtTemp = this.GetAsciiDataTable();
+
+            if (dtTemp.Rows.Count == 0)
+                return new DataTable();
+
+            IEnumerable<DataRow> rows = dtTemp.AsEnumerable().Skip(startingRow).Take(nbRows);
             return rows.CopyToDataTable();
         }
 
@@ -212,7 +227,7 @@ namespace editeurHexadecimal {
 
             coords2 = GetNewCoords(coords);
 
-            if (this.Hexadecimal[coords2.Y][coords2.X] != null && coords2.Y * 16 + coords2.X < ByteFile.Length)
+            if (this.Hexadecimal[coords2.Y][coords2.X] != null && coords2.Y * 16 + coords2.X <= ByteFile.Length)
                 return Convert.ToString(Convert.ToInt16(this.Hexadecimal[coords2.Y][coords2.X] + this.Hexadecimal[coords.Y][coords.X], 16)); // 16bits = 4 hexadecimal digits
             else
                 return "Données hors limite.";
@@ -228,7 +243,7 @@ namespace editeurHexadecimal {
 
             coords2 = GetNewCoords(coords);
 
-            if (this.Hexadecimal[coords2.Y][coords2.X] != null && coords2.Y * 16 + coords2.X < ByteFile.Length)
+            if (this.Hexadecimal[coords2.Y][coords2.X] != null && coords2.Y * 16 + coords2.X <= ByteFile.Length)
                 return Convert.ToString(Convert.ToUInt16(this.Hexadecimal[coords2.Y][coords2.X] + this.Hexadecimal[coords.Y][coords.X], 16)); // 16bits = 4 hexadecimal digits
             else
                 return "Données hors limite.";
@@ -248,7 +263,7 @@ namespace editeurHexadecimal {
             coords3 = GetNewCoords(coords2);
             coords4 = GetNewCoords(coords3);
 
-            if (this.Hexadecimal[coords4.Y][coords4.X] != null && coords4.Y * 16 + coords4.X < ByteFile.Length)
+            if (this.Hexadecimal[coords4.Y][coords4.X] != null && coords4.Y * 16 + coords4.X <= ByteFile.Length)
                 return Convert.ToString(Convert.ToInt32(this.Hexadecimal[coords4.Y][coords4.X] + this.Hexadecimal[coords3.Y][coords3.X] + this.Hexadecimal[coords2.Y][coords2.X] + this.Hexadecimal[coords.Y][coords.X], 16)); //32bits = 8 hexadecimal digits
             else
                 return "Données hors limite.";
@@ -268,7 +283,7 @@ namespace editeurHexadecimal {
             coords3 = GetNewCoords(coords2);
             coords4 = GetNewCoords(coords3);
 
-            if (this.Hexadecimal[coords4.Y][coords4.X] != null && coords4.Y * 16 + coords4.X < ByteFile.Length)
+            if (this.Hexadecimal[coords4.Y][coords4.X] != null && coords4.Y * 16 + coords4.X <= ByteFile.Length)
                 return Convert.ToString(Convert.ToUInt32(this.Hexadecimal[coords4.Y][coords4.X] + this.Hexadecimal[coords3.Y][coords3.X] + this.Hexadecimal[coords2.Y][coords2.X] + this.Hexadecimal[coords.Y][coords.X], 16)); //32bits = 8 hexadecimal digits
             else
                 return "Données hors limite.";
@@ -296,7 +311,7 @@ namespace editeurHexadecimal {
             coords7 = GetNewCoords(coords6);
             coords8 = GetNewCoords(coords7);
 
-            if (this.Hexadecimal[coords8.Y][coords8.X] != null && coords8.Y * 16 + coords8.X < ByteFile.Length)
+            if (this.Hexadecimal[coords8.Y][coords8.X] != null && coords8.Y * 16 + coords8.X <= ByteFile.Length)
                 return Convert.ToString(Convert.ToInt64(this.Hexadecimal[coords8.Y][coords8.X] +
                     this.Hexadecimal[coords7.Y][coords7.X] +
                     this.Hexadecimal[coords6.Y][coords6.X] +
@@ -323,7 +338,7 @@ namespace editeurHexadecimal {
             coords3 = GetNewCoords(coords2);
             coords4 = GetNewCoords(coords3);
 
-            if (this.Hexadecimal[coords4.Y][coords4.X] != null && coords4.Y * 16 + coords4.X < ByteFile.Length)
+            if (this.Hexadecimal[coords4.Y][coords4.X] != null && coords4.Y * 16 + coords4.X <= ByteFile.Length)
                 return Convert.ToString(BitConverter.ToSingle(BitConverter.GetBytes(uint.Parse(this.Hexadecimal[coords4.Y][coords4.X] + this.Hexadecimal[coords3.Y][coords3.X] + this.Hexadecimal[coords2.Y][coords2.X] + this.Hexadecimal[coords.Y][coords.X], System.Globalization.NumberStyles.AllowHexSpecifier)), 0)); //32bits = 8 hexadecimal digits
             else
                 return "Données hors limite.";
@@ -351,7 +366,7 @@ namespace editeurHexadecimal {
             coords7 = GetNewCoords(coords6);
             coords8 = GetNewCoords(coords7);
 
-            if (this.Hexadecimal[coords8.Y][coords8.X] != null && coords8.Y * 16 + coords8.X < ByteFile.Length)
+            if (this.Hexadecimal[coords8.Y][coords8.X] != null && coords8.Y * 16 + coords8.X <= ByteFile.Length)
                 return Convert.ToString(BitConverter.ToDouble(BitConverter.GetBytes(Convert.ToInt64(this.Hexadecimal[coords8.Y][coords8.X] +
                     this.Hexadecimal[coords7.Y][coords7.X] +
                     this.Hexadecimal[coords6.Y][coords6.X] +
@@ -370,7 +385,7 @@ namespace editeurHexadecimal {
         /// <param name="previousPoint">Starting point.</param>
         /// <returns>Next point.</returns>
         private static Point GetNewCoords(Point previousPoint) {
-            if (previousPoint.X + 1 > 15)
+            if (previousPoint.X + 1 > 16)
                 return new Point(1, previousPoint.Y + 1);
             else
                 return new Point(previousPoint.X + 1, previousPoint.Y);

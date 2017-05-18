@@ -9,13 +9,17 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace editeurHexadecimal {
+
+    /// <summary>
+    /// View of the program
+    /// </summary>
     public partial class frmMain : Form {
         HexaEditModel model;
         int firstRowIndex = 0; //index of the first row (in comparison with the whole data set, not just the part shown in the view
         Size previousSize; //Size of the form before it was resized
-        bool firstTime = true; //First time 
-        List<Point> redCellPosList = new List<Point>();
-        const int NB_ROW = 17;
+        bool firstTime = true; //Indicate that the program has just been launched and that we access this variable for the first time
+        List<Point> redCellPosList = new List<Point>(); //List of the cells that must have a red font 
+        const int NB_ROW = 17; // Number of rows shown in each dataGridView
         const int OFFSET_COLUMN_WIDTH = 55;
 
         /// <summary>
@@ -48,28 +52,31 @@ namespace editeurHexadecimal {
                 model = new HexaEditModel(openFileDialog1.FileName);
                 updateGridView();
 
-                //hexaGridView.Columns[0] = offset column
-                hexaGridView.Columns[0].Width = OFFSET_COLUMN_WIDTH;
-                hexaGridView.Columns[0].ReadOnly = true;
-                hexaGridView.Columns[0].DefaultCellStyle.BackColor = Color.Gray;
-                hexaGridView.Columns[0].DefaultCellStyle.SelectionBackColor = Color.Gray;
-                hexaGridView.Columns[0].DefaultCellStyle.SelectionForeColor = SystemColors.ControlText;
+                if (hexaGridView.Rows.Count > 0) {
+                    hexaGridView.Columns[0].Width = OFFSET_COLUMN_WIDTH; //hexaGridView.Columns[0] = offset column
+                    hexaGridView.Columns[0].ReadOnly = true;
+                    hexaGridView.Columns[0].DefaultCellStyle.BackColor = Color.Gray;
+                    hexaGridView.Columns[0].DefaultCellStyle.SelectionBackColor = Color.Gray;
+                    hexaGridView.Columns[0].DefaultCellStyle.SelectionForeColor = SystemColors.ControlText;
 
-                setHexaDimension(true);
-                setAsciiDimension(true);
+                    setHexaDimension(true);
+                    setAsciiDimension(true);
 
-                lblAttribute.Text = model.MyFileData.Attributs;
-                lblCreatedDate.Text = model.MyFileData.CreationTime.ToString();
-                lblLastAccess.Text = model.MyFileData.LastAccessTime.ToString();
-                lblModifyOn.Text = model.MyFileData.LastWriteTime.ToString();
-                lblName.Text = model.MyFileData.Name;
-                lblShortName.Text = model.MyFileData.ShortName;
-                lblSize.Text = model.MyFileData.FileSize.ToString();
+                    lblAttribute.Text = model.MyFileData.Attributs;
+                    lblCreatedDate.Text = model.MyFileData.CreationTime.ToString();
+                    lblLastAccess.Text = model.MyFileData.LastAccessTime.ToString();
+                    lblModifyOn.Text = model.MyFileData.LastWriteTime.ToString();
+                    lblName.Text = model.MyFileData.Name;
+                    lblShortName.Text = model.MyFileData.ShortName;
+                    lblSize.Text = model.MyFileData.FileSize.ToString();
 
-                asciiGridView.Rows[0].Cells[0].Selected = false; //It was automatically selected for an unknown reason
+                    asciiGridView.Rows[0].Cells[0].Selected = false; //It was automatically selected for an unknown reason
 
-                nupPaging.Maximum = model.Hexadecimal.Count() / NB_ROW;
-                lblMax.Text = (model.Hexadecimal.Count() / NB_ROW).ToString() + " )";
+                    nupPaging.Maximum = model.Hexadecimal.Count() / NB_ROW;
+                    lblMax.Text = (model.Hexadecimal.Count() / NB_ROW).ToString() + " )";
+                } else {
+                    MessageBox.Show("Vous avez choisi un fichier vide");
+                }
             }
         }
 
@@ -158,7 +165,9 @@ namespace editeurHexadecimal {
         private void updateGridView() {
             hexaGridView.DataSource = model.GetHexaDataTable(firstRowIndex, NB_ROW);
             asciiGridView.DataSource = model.GetAsciiDataTable(firstRowIndex, NB_ROW);
-            asciiGridView.Rows[0].Cells[0].Selected = false; //It was automatically selected for an unknown reason
+
+            if(asciiGridView.Rows.Count > 0)
+                asciiGridView.Rows[0].Cells[0].Selected = false; //It was automatically selected for an unknown reason
 
             updateCellForeColor();
         }
@@ -280,6 +289,9 @@ namespace editeurHexadecimal {
                 setHexaDimension();
                 setAsciiDimension();
 
+                lblNupInfo1.Location = new Point(lblNupInfo1.Location.X, hexaGridView.Location.Y + 20 + hexaGridView.Height);
+                lblNupInfo2.Location = new Point(lblNupInfo2.Location.X, hexaGridView.Location.Y + 20 + hexaGridView.Height);
+
                 // Still kind of buggy, work of we move slowy but not otherwise, doesn't fit perfectly in the space available.
                 //Maybe add to the offset the remaining space and correct the division (not sur they're good).
             }
@@ -346,11 +358,21 @@ namespace editeurHexadecimal {
                 }
         }
 
+        /// <summary>
+        /// Save the changes made to the file
+        /// </summary>
+        /// <param name="sender">The clicked button</param>
+        /// <param name="e">Argument of the event</param>
         private void btnSave_Click(object sender, EventArgs e) {
             if(MessageBox.Show("Etes-vous sûr de vouloir enregister les changements?", "Confirmation d'enregistrement", MessageBoxButtons.OKCancel) == DialogResult.OK)
                 model.Save();
         }
 
+        /// <summary>
+        /// Update the gridviwe with the desired set of data given by the numeric up down component value
+        /// </summary>
+        /// <param name="sender">The numeric up down component whose had it's value changed</param>
+        /// <param name="e">Argument of the event</param>
         private void nupPaging_ValueChanged(object sender, EventArgs e) {
             firstRowIndex = (int)nupPaging.Value * NB_ROW;
             updateGridView();

@@ -77,6 +77,8 @@ namespace editeurHexadecimal {
                 } else {
                     MessageBox.Show("Vous avez choisi un fichier vide");
                 }
+
+                redCellPosList.Clear();
             }
         }
 
@@ -309,15 +311,18 @@ namespace editeurHexadecimal {
             if (dgv.Name == "hexaGridView")
             {
                 // test that the user didn't erase the content of the cell or write something longer than 2 character 
-                if (hexaGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != String.Empty && hexaGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().Length <= 2) { 
+                if (hexaGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != String.Empty && hexaGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().Length <= 2) {
+                    updateBeforeEdit(e.RowIndex, e.ColumnIndex, cellPos);
                     model.ChangeValueHex(cellPos, hexaGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
                     updateAfterEdit(e.RowIndex, e.ColumnIndex, cellPos);
+                    
                 } else {
                     updateGridView(); // cancel user deletion
                 }
             } else {
                 // test that the user didn't erase the content of the cell or write something longer than 1 character 
                 if (asciiGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() != String.Empty && asciiGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString().Length <= 1) {
+                    updateBeforeEdit(e.RowIndex, e.ColumnIndex + 1, new Point(e.ColumnIndex + 1, e.RowIndex));
                     model.ChangeValueAscii(cellPos, Convert.ToChar(asciiGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Value));
                     updateAfterEdit(e.RowIndex, e.ColumnIndex + 1, new Point(e.ColumnIndex + 1, e.RowIndex));
                 } else {
@@ -334,13 +339,26 @@ namespace editeurHexadecimal {
         /// <param name="rowIndex">Row index of the edited cell (in the view)</param>
         /// <param name="columnIndex">Column index of the edited cell (in the view)</param>
         /// <param name="cellPos">Cell position (regarding the entire table and not just the view)</param>
-        private void updateAfterEdit(int rowIndex, int columnIndex, Point cellPos) {
-            updateGridView();
+        private void updateBeforeEdit(int rowIndex, int columnIndex, Point cellPos) {
+            if (hexaGridView.Rows[rowIndex].Cells[columnIndex].Value.ToString() != model.Hexadecimal[rowIndex][columnIndex].ToString())
+            {
+                hexaGridView.Rows[rowIndex].Cells[columnIndex].Style.ForeColor = Color.Red;
+                asciiGridView.Rows[rowIndex].Cells[columnIndex - 1].Style.ForeColor = Color.Red;
+                redCellPosList.Add(cellPos);
+            }
+        }
 
-            hexaGridView.Rows[rowIndex].Cells[columnIndex].Style.ForeColor = Color.Red;
-            asciiGridView.Rows[rowIndex].Cells[columnIndex - 1].Style.ForeColor = Color.Red;
-
-            redCellPosList.Add(cellPos);
+        /// <summary>
+        /// Update the color of the edited cell and keep their location in a list
+        /// </summary>
+        /// <param name="rowIndex">Row index of the edited cell (in the view)</param>
+        /// <param name="columnIndex">Column index of the edited cell (in the view)</param>
+        /// <param name="cellPos">Cell position (regarding the entire table and not just the view)</param>
+        private void updateAfterEdit(int rowIndex, int columnIndex, Point cellPos)
+        {
+            //updateGridView();
+            hexaGridView.Rows[rowIndex].Cells[columnIndex].Value = model.Hexadecimal[rowIndex][columnIndex].ToString();
+            asciiGridView.Rows[rowIndex].Cells[columnIndex - 1].Value = model.GetAsciiDataTable().Rows[rowIndex].ItemArray[columnIndex - 1].ToString();
         }
 
         /// <summary>
